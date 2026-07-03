@@ -93,7 +93,6 @@ export const queries = {
 
 // Using `any` at this boundary is intentional: this is the single seam
 // translating an untyped CMS response into the app's strict internal types.
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function mapSanityProject(doc: any): Project {
   return {
     title: doc.title,
@@ -124,7 +123,6 @@ export function mapSanityProject(doc: any): Project {
   };
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function mapSanityTestimonial(doc: any): Testimonial {
   return {
     clientName: doc.clientName,
@@ -135,7 +133,6 @@ export function mapSanityTestimonial(doc: any): Testimonial {
   };
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function mapSanityService(doc: any): Service {
   return { title: doc.title, description: doc.description };
 }
