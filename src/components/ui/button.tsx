@@ -9,6 +9,7 @@ interface ButtonProps {
   variant?: "primary" | "secondary";
   type?: "button" | "submit";
   className?: string;
+  size?: string;
   children: React.ReactNode;
 }
 
@@ -18,6 +19,7 @@ export function Button({
   variant = "primary",
   type = "button",
   className,
+  size,
   children,
 }: ButtonProps) {
   const base =
