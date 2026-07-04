@@ -67,7 +67,7 @@ const PROJECTS: Project[] = [
     publishDate: "2026-07-03",
   },
   {
-    title: "Memorug",
+    title: "Memorug — Keep the Memory",
     slug: "memorug",
     client: "Memorug",
     industry: "Product",

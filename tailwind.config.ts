@@ -17,8 +17,8 @@ const config: Config = {
           secondary: "var(--text-secondary)",
         },
         accent: {
-          DEFAULT: "#315EFB",
-          hover: "#2748D9",
+          DEFAULT: "#C69C6D",
+          hover: "#B08A5B",
         },
         success: "#16A34A",
         warning: "#EAB308",
