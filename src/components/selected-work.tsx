@@ -101,7 +101,7 @@ export function SelectedWork({ projects, dict }: { projects: Project[]; dict: an
               className={cn(
                 "flex h-12 w-12 items-center justify-center rounded-full border border-white/20 transition-all duration-300",
                 canScrollLeft
-                  ? "text-white hover:bg-white hover:text-black"
+                  ? "text-white hover:bg-white hover:text-black active:scale-90"
                   : "text-white/20 cursor-not-allowed"
               )}
             >
@@ -116,7 +116,7 @@ export function SelectedWork({ projects, dict }: { projects: Project[]; dict: an
               className={cn(
                 "flex h-12 w-12 items-center justify-center rounded-full border border-white/20 transition-all duration-300",
                 canScrollRight
-                  ? "text-white hover:bg-white hover:text-black"
+                  ? "text-white hover:bg-white hover:text-black active:scale-90"
                   : "text-white/20 cursor-not-allowed"
               )}
             >
