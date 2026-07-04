@@ -15,6 +15,7 @@ import { Reveal } from "@/components/animations/reveal";
 import { ImageCarousel } from "@/components/image-carousel";
 import { StackedVideoPlayer } from "@/components/stacked-video-player";
 import { dictionaries } from "@/lib/dictionaries";
+import { cn } from "@/lib/utils";
 
 interface ProjectPageProps {
   params: { slug: string };
@@ -76,6 +77,8 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
         {project.stackedVideos && project.stackedVideos.length > 0 ? (
           <StackedVideoPlayer
             videos={project.stackedVideos}
+            labels={project.stackedVideoLabels}
+            aspectRatios={project.stackedVideoAspectRatios}
             poster={project.posterImage}
             className="w-full mb-16"
           />
@@ -84,7 +87,12 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
             src={project.heroVideo || "/showreel.mp4"}
             muxPlaybackId={project.muxPlaybackId}
             poster={project.posterImage}
-            className="w-full mb-16"
+            className={cn(
+              "w-full mb-16",
+              project.videoAspectRatio === "9/16" && "max-w-md mx-auto",
+              project.videoAspectRatio === "4/5" && "max-w-xl mx-auto"
+            )}
+            videoAspectRatio={project.videoAspectRatio}
           />
         )}
       </section>

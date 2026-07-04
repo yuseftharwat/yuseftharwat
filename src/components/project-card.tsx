@@ -70,10 +70,10 @@ export function ProjectCard({
           />
         )}
 
-        {project.heroVideo && (
+        {(project.hoverVideo || (project.heroVideo && !project.heroVideo.includes("vimeo.com"))) && (
           <video
             ref={videoRef}
-            src={project.heroVideo}
+            src={project.hoverVideo || project.heroVideo}
             muted
             loop
             playsInline

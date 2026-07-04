@@ -23,12 +23,16 @@ export interface Project {
   thumbnailScale?: number;
   videoHoverScale?: number;
   hoverStartTime?: number;
+  hoverVideo?: string;
+  videoAspectRatio?: string;
   heroVideo: string;
   /** Mux playback ID, if hosting video on Mux. Takes precedence over heroVideo when present. */
   muxPlaybackId?: string;
   posterImage: string;
   galleryImages: string[];
   stackedVideos?: string[];
+  stackedVideoLabels?: string[];
+  stackedVideoAspectRatios?: string[];
   behindTheScenesImages: string[];
   tags: string[];
   featured: boolean;

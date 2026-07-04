@@ -10,6 +10,7 @@ interface VideoPlayerProps {
   muxPlaybackId?: string;
   className?: string;
   autoPlay?: boolean;
+  videoAspectRatio?: string;
 }
 
 /**
@@ -22,7 +23,7 @@ interface VideoPlayerProps {
  * playback ID, it falls back to a plain progressive `src` (e.g. an MP4 on
  * Cloudflare R2 or any static URL).
  */
-export function VideoPlayer({ src, poster, muxPlaybackId, className, autoPlay = true }: VideoPlayerProps) {
+export function VideoPlayer({ src, poster, muxPlaybackId, className, autoPlay = true, videoAspectRatio }: VideoPlayerProps) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const [playing, setPlaying] = useState(false);
@@ -170,6 +171,25 @@ export function VideoPlayer({ src, poster, muxPlaybackId, className, autoPlay = 
     window.addEventListener("keydown", onKeyDown);
     return () => window.removeEventListener("keydown", onKeyDown);
   }, []);
+
+  if (resolvedSrc?.includes("vimeo.com")) {
+    return (
+      <div 
+        className={cn("relative w-full rounded-card overflow-hidden shadow-xl", className)}
+        style={{ aspectRatio: videoAspectRatio || "16/9" }}
+      >
+        <iframe
+          src={resolvedSrc}
+          className="absolute inset-0 w-full h-full"
+          frameBorder="0"
+          allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
+          referrerPolicy="strict-origin-when-cross-origin"
+          allowFullScreen
+          title="Vimeo Video"
+        />
+      </div>
+    );
+  }
 
   return (
     <div
