@@ -49,7 +49,7 @@ export function ContactForm({ dict }: { dict: any }) {
     <form onSubmit={handleSubmit(onSubmit)} className="grid grid-cols-1 gap-6 sm:grid-cols-2" noValidate>
       {/* Honeypot field for spam bots */}
       <div className="hidden" aria-hidden="true" style={{ display: 'none' }}>
-        <label htmlFor="honeypot">Don't fill this out if you're human:</label>
+        <label htmlFor="honeypot">Don&apos;t fill this out if you&apos;re human:</label>
         <input id="honeypot" {...register("honeypot")} tabIndex={-1} autoComplete="off" />
       </div>
       <div className="sm:col-span-1">
