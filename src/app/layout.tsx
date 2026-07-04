@@ -28,10 +28,10 @@ export const metadata: Metadata = {
     "Yusef Tharwat is a 3D product visualization and motion designer creating commercial-quality CGI for brands, startups, and agencies.",
   icons: {
     icon: [
-      { url: "/icon.jpeg", type: "image/jpeg" },
+      { url: "/icon.png", type: "image/png" },
     ],
     apple: [
-      { url: "/icon.jpeg", type: "image/jpeg" },
+      { url: "/icon.png", type: "image/png" },
     ],
   },
   openGraph: {

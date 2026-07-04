@@ -7,6 +7,7 @@ export const dictionaries = {
       letsTalk: "Let's Talk",
     },
     hero: {
+      eyebrow: "3D ARTIST & MOTION DESIGNER",
       titlePart1: "I make your brand look ",
       titleHighlight: "cooler",
       titlePart2: " than your competition.",
@@ -38,13 +39,16 @@ export const dictionaries = {
     },
     about: {
       eyebrow: "About",
-      title: "I build the version of a product that doesn't exist yet.",
-      description: "My work sits at the intersection of industrial design and film — treating every render like a shot that has to earn its place in a campaign, not just prove a product is real.",
+      bio1: "I create cinematic 3D visuals that help brands present products before they exist in the real world.",
+      bio2: "Over the past 4 years, I've specialized in transforming concepts into photorealistic renders, product animations, and CGI commercials that bridge the gap between industrial design and advertising. My work combines technical precision with cinematic storytelling, creating visuals that don't just showcase products—they build desire, communicate value, and support marketing campaigns.",
+      bio3: "Every project is crafted with meticulous attention to composition, lighting, materials, and motion, ensuring every frame earns its place.",
       stats: [
-        { label: "Years of experience", value: "8+" },
-        { label: "Industries served", value: "Furniture, Healthcare, Technology, Consumer" },
-        { label: "Approach", value: "CAD-accurate modeling, photoreal lighting, restrained motion" },
+        { label: "Experience", value: "4+ Years" },
+        { label: "Specialization", value: "3D Product Visualization, Motion Design & CGI" },
+        { label: "Industries", value: "Furniture • Consumer Products • Automotive • Architecture • Technology • Food & Beverage" },
+        { label: "Approach", value: "CAD-accurate modeling, photorealistic lighting, cinematic composition, restrained motion, and detail-driven storytelling." },
       ],
+      heroStatement: "I create cinematic 3D visuals that make products impossible to ignore.",
     },
     testimonials: {
       eyebrow: "Testimonials",
@@ -99,6 +103,7 @@ export const dictionaries = {
       letsTalk: "خلّينا نتكلم",
     },
     hero: {
+      eyebrow: "فنان ثلاثي الأبعاد ومصمم جرافيك متحرك",
       titlePart1: "بخلي علامتك التجارية شكلها ",
       titleHighlight: "أحلى",
       titlePart2: " بمراحل من منافسيك.",
@@ -130,13 +135,16 @@ export const dictionaries = {
     },
     about: {
       eyebrow: "مين أنا",
-      title: "ببني النسخة اللي لسه مش موجودة من منتجك.",
-      description: "شغلي بيجمع بين التصميم الصناعي والسينما — بتعامل مع كل ريندر كلقطة لازم تستاهل مكانها في الحملة، مش مجرد إثبات إن المنتج حقيقي.",
+      bio1: "ببيعمل مرئيات ثلاثية الأبعاد سينمائية تساعد الماركات تعرض منتجاتها قبل ما تتوجد في الحقيقة.",
+      bio2: "على مدار 4 سنين، اتخصصت في تحويل الأفكار لريندرات واقعية، أنيميشن منتجات، وإعلانات CGI بتجمع بين الدقة التقنية وقص القصص السينمائية — مش بس بتعرض المنتج، بتبني رغبة فيه وبتوصل قيمته.",
+      bio3: "كل مشروع بيتعمل باهتمام دقيق بالتكوين، الإضاءة، الخامات، والحركة — علشان كل فريم يستاهل مكانه.",
       stats: [
-        { label: "سنين الخبرة", value: "+8" },
-        { label: "مجالات اشتغلت فيها", value: "أثاث، رعاية صحية، تكنولوجيا، منتجات استهلاكية" },
-        { label: "طريقة الشغل", value: "موديلينج دقيق، إضاءة واقعية، وحركة مدروسة" },
+        { label: "الخبرة", value: "+4 سنوات" },
+        { label: "التخصص", value: "تصور منتجات ثلاثي الأبعاد، موشن ديزاين، وCGI" },
+        { label: "المجالات", value: "أثاث • منتجات استهلاكية • سيارات • معمار • تكنولوجيا • أغذية ومشروبات" },
+        { label: "طريقة الشغل", value: "موديلينج دقيق، إضاءة واقعية، تكوين سينمائي، حركة مدروسة، وقصص تفصيلية." },
       ],
+      heroStatement: "ببيعمل مرئيات ثلاثية الأبعاد تخلي المنتجات مستحيلة تتجاهلها.",
     },
     testimonials: {
       eyebrow: "رأي العملاء",

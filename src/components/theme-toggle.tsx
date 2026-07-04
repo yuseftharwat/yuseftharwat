@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 
-export function ThemeToggle() {
+export function ThemeToggle({ scrolled = false }: { scrolled?: boolean }) {
   const [isDark, setIsDark] = useState(false);
   const [mounted, setMounted] = useState(false);
 
@@ -37,7 +37,7 @@ export function ThemeToggle() {
   // Prevent hydration mismatch by not rendering the icon until mounted
   if (!mounted) {
     return (
-      <div className="flex h-10 w-10 items-center justify-center rounded-full border border-border bg-bg-secondary"></div>
+      <div className="flex h-8 w-12 items-center justify-center"></div>
     );
   }
 
@@ -45,15 +45,16 @@ export function ThemeToggle() {
     <button
       onClick={toggleTheme}
       aria-label="Toggle dark mode"
-      className="flex h-10 w-10 items-center justify-center rounded-full border border-border bg-bg-secondary text-text-primary transition-colors hover:bg-bg-primary"
+      className={`text-[13px] font-semibold uppercase tracking-widest transition-colors ${
+        scrolled ? "text-text-primary/80 hover:text-text-primary" : "text-white/80 hover:text-white"
+      }`}
     >
       <motion.div
         initial={false}
-        animate={{ rotate: isDark ? 180 : 0, scale: [0.8, 1.1, 1] }}
-        transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-        className="text-lg"
+        animate={{ opacity: [0, 1] }}
+        transition={{ duration: 0.3 }}
       >
-        {isDark ? "🌙" : "☀️"}
+        {isDark ? "Light" : "Dark"}
       </motion.div>
     </button>
   );

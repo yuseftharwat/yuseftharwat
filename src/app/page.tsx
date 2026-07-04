@@ -1,7 +1,6 @@
 import { Hero } from "@/components/hero";
 import { SelectedWork } from "@/components/selected-work";
 import { Services } from "@/components/services";
-import { Process } from "@/components/process";
 import { About } from "@/components/about";
 import { Testimonials } from "@/components/testimonials";
 import { Contact } from "@/components/contact";
@@ -25,7 +24,6 @@ export default async function HomePage() {
       <Hero dict={dict.hero} />
       <SelectedWork projects={projects} dict={dict.selectedWork} />
       <Services services={services} dict={dict.services} />
-      <Process dict={dict.process} />
       <About dict={dict.about} />
       <Testimonials testimonials={testimonials} dict={dict.testimonials} />
       <Contact dict={dict.contact} />
