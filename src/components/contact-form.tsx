@@ -80,10 +80,9 @@ export function ContactForm({ dict }: { dict: any }) {
         <label htmlFor="budget" className="mb-1 block text-small text-text-secondary">{dict.budget}</label>
         <select id="budget" {...register("budget")} className={inputClasses}>
           <option value="">{dict.selectRange}</option>
-          <option value="under-5k">Under $5,000</option>
-          <option value="5k-15k">$5,000 – $15,000</option>
-          <option value="15k-40k">$15,000 – $40,000</option>
-          <option value="40k-plus">$40,000+</option>
+          <option value="300-1k">$300 – $1,000</option>
+          <option value="1k-3k">$1,000 – $3,000</option>
+          <option value="3k-plus">$3,000+</option>
         </select>
         {errors.budget && <p className="mt-1 text-small text-error">{errors.budget.message as string}</p>}
       </div>

@@ -2,14 +2,15 @@ import { ContactForm } from "@/components/contact-form";
 
 export function Contact({ dict }: { dict: any }) {
   return (
-    <section id="contact" className="py-section bg-bg-primary">
-      <div className="mx-auto max-w-content px-6 md:px-10">
+    <section id="contact" className="py-section relative overflow-hidden bg-bg-primary">
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-4xl h-[600px] bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-accent/10 via-bg-primary/0 to-transparent pointer-events-none"></div>
+      <div className="relative mx-auto max-w-content px-6 md:px-10">
         <div className="grid grid-cols-1 gap-16 lg:grid-cols-12">
           <div className="lg:col-span-5">
-            <h2 className="font-heading text-section-title text-text-primary">
+            <h2 className="font-heading text-section-title bg-clip-text text-transparent bg-gradient-to-b from-text-primary to-text-secondary">
               {dict.title}
             </h2>
-            <p className="mt-6 max-w-sm text-body text-text-secondary">
+            <p className="mt-6 max-w-sm text-body text-text-secondary leading-relaxed">
               {dict.description}
             </p>
 
