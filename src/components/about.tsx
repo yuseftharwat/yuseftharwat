@@ -48,7 +48,7 @@ export function About({ dict }: { dict: any }) {
         <Reveal delay={0.15}>
           <div className="mt-16 border-l-2 border-text-primary/20 pl-8">
             <p className="font-heading text-2xl md:text-3xl italic text-text-primary leading-snug">
-              "{dict.heroStatement}"
+              &quot;{dict.heroStatement}&quot;
             </p>
           </div>
         </Reveal>
