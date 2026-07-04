@@ -7,9 +7,13 @@ import { ProjectCard } from "@/components/project-card";
 import { CATEGORIES, type Category, type Project } from "@/lib/types";
 import { cn } from "@/lib/utils";
 
+const SCROLL_SPEED = 0.5; // pixels per frame (~30px/sec at 60fps)
+
 export function SelectedWork({ projects, dict }: { projects: Project[]; dict: any }) {
   const filtered = projects;
   const scrollRef = useRef<HTMLDivElement>(null);
+  const rafRef = useRef<number>();
+  const isPausedRef = useRef(false);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
 
@@ -31,6 +35,37 @@ export function SelectedWork({ projects, dict }: { projects: Project[]; dict: an
       window.removeEventListener("resize", checkScroll);
     };
   }, [checkScroll]);
+
+  // Continuous smooth auto-scroll with requestAnimationFrame
+  useEffect(() => {
+    const tick = () => {
+      const el = scrollRef.current;
+      if (el && !isPausedRef.current) {
+        const maxScroll = el.scrollWidth - el.clientWidth;
+        if (el.scrollLeft >= maxScroll - 1) {
+          // Seamlessly jump back to start
+          el.scrollLeft = 0;
+        } else {
+          el.scrollLeft += SCROLL_SPEED;
+        }
+      }
+      rafRef.current = requestAnimationFrame(tick);
+    };
+
+    rafRef.current = requestAnimationFrame(tick);
+    return () => {
+      if (rafRef.current) cancelAnimationFrame(rafRef.current);
+    };
+  }, []);
+
+  // Pause on hover
+  const handleMouseEnter = useCallback(() => {
+    isPausedRef.current = true;
+  }, []);
+
+  const handleMouseLeave = useCallback(() => {
+    isPausedRef.current = false;
+  }, []);
 
   const scroll = (direction: "left" | "right") => {
     const el = scrollRef.current;
@@ -96,7 +131,9 @@ export function SelectedWork({ projects, dict }: { projects: Project[]; dict: an
       {/* Horizontal Scroll Container — full bleed */}
       <div
         ref={scrollRef}
-        className="relative z-10 flex gap-6 overflow-x-auto scroll-smooth px-6 md:px-10 pb-4 no-scrollbar"
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
+        className="relative z-10 flex gap-6 overflow-x-auto px-6 md:px-10 pb-4 no-scrollbar"
         style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
       >
         {/* Left spacer to align with max-w-site */}
