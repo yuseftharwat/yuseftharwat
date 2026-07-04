@@ -3,14 +3,14 @@
 @tailwind utilities;
 
 :root {
-  color-scheme: dark;
+  color-scheme: light;
   --font-heading: "Cormorant Garamond";
-  --bg-primary: #0A0908;
-  --bg-secondary: #121110;
-  --card: #141312;
-  --border: #292624;
-  --text-primary: #F0EDE8;
-  --text-secondary: #96918A;
+  --bg-primary: #F8F6F2;
+  --bg-secondary: #F0EDE8;
+  --card: #FFFFFF;
+  --border: #E0DCD5;
+  --text-primary: #1A1816;
+  --text-secondary: #6B655D;
 }
 
 .dark {
@@ -37,6 +37,7 @@ body {
   font-family: var(--font-body), Inter, sans-serif;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
+  transition: background-color 0.4s ease, color 0.4s ease;
 }
 
 h1,
@@ -100,7 +101,7 @@ select:focus-visible,
   }
 }
 
-/* Custom scrollbar, subtle */
+/* Custom scrollbar — light mode */
 ::-webkit-scrollbar {
   width: 10px;
 }
@@ -114,11 +115,21 @@ select:focus-visible,
   border-radius: 999px;
 }
 
-/* Custom cursor — small sharp arrow */
+/* Custom scrollbar — dark mode */
+.dark ::-webkit-scrollbar-track {
+  background: #1a1817;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: #3a3633;
+}
+
+/* Custom cursor — light mode (dark arrow) */
 *, *::before, *::after {
   cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='36' height='36' viewBox='0 0 24 24'%3E%3Cpath d='M3.5,3.5 L10.5,21.5 L14,14 L21.5,10.5 Z' fill='%23161616' stroke='%23f8f7f4' stroke-width='1.5' stroke-linejoin='round'/%3E%3C/svg%3E") 4 4, auto !important;
 }
 
+/* Custom cursor — dark mode (light arrow) */
 .dark *, .dark *::before, .dark *::after {
   cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='36' height='36' viewBox='0 0 24 24'%3E%3Cpath d='M3.5,3.5 L10.5,21.5 L14,14 L21.5,10.5 Z' fill='%23F0EDE8' stroke='%230A0908' stroke-width='1.5' stroke-linejoin='round'/%3E%3C/svg%3E") 4 4, auto !important;
 }

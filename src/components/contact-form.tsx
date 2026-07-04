@@ -72,12 +72,12 @@ export function ContactForm({ dict }: { dict: any }) {
       <div className="sm:col-span-1">
         <label htmlFor="projectType" className="mb-1 block text-small text-text-secondary">{dict.projectType}</label>
         <select id="projectType" {...register("projectType")} className={inputClasses}>
-          <option value="" className="bg-[#121110] text-white">{dict.selectOne}</option>
-          <option value="product-visualization" className="bg-[#121110] text-white">{dict.productVisualization}</option>
-          <option value="product-animation" className="bg-[#121110] text-white">{dict.productAnimation}</option>
-          <option value="motion-design" className="bg-[#121110] text-white">{dict.motionDesign}</option>
-          <option value="commercial-cgi" className="bg-[#121110] text-white">{dict.commercialCGI}</option>
-          <option value="other" className="bg-[#121110] text-white">{dict.other}</option>
+          <option value="" className="bg-bg-primary text-text-primary">{dict.selectOne}</option>
+          <option value="product-visualization" className="bg-bg-primary text-text-primary">{dict.productVisualization}</option>
+          <option value="product-animation" className="bg-bg-primary text-text-primary">{dict.productAnimation}</option>
+          <option value="motion-design" className="bg-bg-primary text-text-primary">{dict.motionDesign}</option>
+          <option value="commercial-cgi" className="bg-bg-primary text-text-primary">{dict.commercialCGI}</option>
+          <option value="other" className="bg-bg-primary text-text-primary">{dict.other}</option>
         </select>
         {errors.projectType && <p className="mt-1 text-small text-error">{errors.projectType.message as string}</p>}
       </div>
@@ -85,10 +85,10 @@ export function ContactForm({ dict }: { dict: any }) {
       <div className="sm:col-span-2">
         <label htmlFor="budget" className="mb-1 block text-small text-text-secondary">{dict.budget}</label>
         <select id="budget" {...register("budget")} className={inputClasses}>
-          <option value="" className="bg-[#121110] text-white">{dict.selectRange}</option>
-          <option value="300-1k" className="bg-[#121110] text-white">$300 – $1,000</option>
-          <option value="1k-3k" className="bg-[#121110] text-white">$1,000 – $3,000</option>
-          <option value="3k-plus" className="bg-[#121110] text-white">$3,000+</option>
+          <option value="" className="bg-bg-primary text-text-primary">{dict.selectRange}</option>
+          <option value="300-1k" className="bg-bg-primary text-text-primary">$300 – $1,000</option>
+          <option value="1k-3k" className="bg-bg-primary text-text-primary">$1,000 – $3,000</option>
+          <option value="3k-plus" className="bg-bg-primary text-text-primary">$3,000+</option>
         </select>
         {errors.budget && <p className="mt-1 text-small text-error">{errors.budget.message as string}</p>}
       </div>
