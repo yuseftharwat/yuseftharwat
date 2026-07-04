@@ -4,15 +4,18 @@ import { useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import type { Project } from "@/lib/types";
+import { cn } from "@/lib/utils";
 
 export function ProjectCard({ 
   project, 
   priority = false,
-  openProjectLabel = "Open Project"
+  openProjectLabel = "Open Project",
+  index = 0
 }: { 
   project: Project; 
   priority?: boolean;
   openProjectLabel?: string;
+  index?: number;
 }) {
   const [hovered, setHovered] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -32,15 +35,20 @@ export function ProjectCard({
     videoRef.current?.pause();
   };
 
+  const isReversed = index % 2 !== 0;
+
   return (
     <Link
       href={`/work/${project.slug}`}
       onMouseEnter={onEnter}
       onMouseLeave={onLeave}
       onClick={() => sessionStorage.setItem("scrollY", String(window.scrollY))}
-      className="group block transition-transform duration-500 ease-elegant hover:-translate-y-1.5"
+      className={cn(
+        "group flex flex-col gap-8 md:gap-16 items-center",
+        isReversed ? "md:flex-row-reverse" : "md:flex-row"
+      )}
     >
-      <div className="relative aspect-[4/3] w-full overflow-hidden rounded-card bg-bg-secondary">
+      <div className="relative aspect-[16/10] w-full md:w-2/3 overflow-hidden bg-bg-secondary">
         {project.thumbnailScale ? (
           <div
             className="absolute inset-0 flex items-center justify-center"
@@ -53,9 +61,10 @@ export function ProjectCard({
                 src={project.thumbnail}
                 alt={`${project.title} — ${project.industry}`}
                 fill
-                sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+                sizes="(min-width: 1024px) 66vw, 100vw"
                 className="object-contain"
                 style={{ objectPosition: project.thumbnailObjectPosition ?? "center" }}
+                priority={priority}
               />
             </div>
           </div>
@@ -64,9 +73,10 @@ export function ProjectCard({
             src={project.thumbnail}
             alt={`${project.title} — ${project.industry}`}
             fill
-            sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+            sizes="(min-width: 1024px) 66vw, 100vw"
             className="object-cover transition-transform duration-700 ease-elegant group-hover:scale-[1.03]"
             style={{ objectPosition: project.thumbnailObjectPosition ?? "center" }}
+            priority={priority}
           />
         )}
 
@@ -85,22 +95,20 @@ export function ProjectCard({
             }}
           />
         )}
-
-        <span
-          className={`absolute bottom-5 left-5 rounded-full bg-white px-5 py-2.5 text-sm font-medium text-black shadow-sm transition-all duration-300 ease-elegant hover:bg-black hover:text-white dark:bg-white dark:text-black dark:hover:bg-black dark:hover:text-white ${
-            hovered ? "translate-y-0 opacity-100" : "translate-y-2 opacity-0"
-          }`}
-        >
-          {openProjectLabel}
-        </span>
       </div>
 
-      <div className="mt-5 flex items-start justify-between gap-4">
-        <div>
-          <h3 className="font-heading text-card-title text-text-primary">{project.title}</h3>
-          <p className="mt-1 text-small text-text-secondary">{project.industry}</p>
+      <div className="w-full md:w-1/3 flex flex-col justify-center">
+        <span className="text-[11px] font-semibold uppercase tracking-[0.2em] text-[#C69C6D] mb-4">
+          {project.industry} — {project.year}
+        </span>
+        <h3 className="font-heading text-4xl md:text-5xl font-bold text-white mb-6 group-hover:text-[#C69C6D] transition-colors duration-500">
+          {project.title}
+        </h3>
+        
+        <div className="mt-4 flex items-center gap-3 text-[11px] font-semibold uppercase tracking-[0.15em] text-white/50 group-hover:text-white transition-colors duration-300">
+          {openProjectLabel}
+          <div className="h-px w-8 bg-white/30 group-hover:w-12 group-hover:bg-white transition-all duration-300" />
         </div>
-        <span className="mt-1 shrink-0 text-small text-text-secondary">{project.year}</span>
       </div>
     </Link>
   );

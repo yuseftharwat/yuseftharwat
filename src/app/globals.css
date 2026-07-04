@@ -3,14 +3,14 @@
 @tailwind utilities;
 
 :root {
-  color-scheme: light;
+  color-scheme: dark;
   --font-heading: "Cormorant Garamond";
-  --bg-primary: #F8F7F4;
-  --bg-secondary: #F1EEE9;
-  --card: #FFFFFF;
-  --border: #D8D4CC;
-  --text-primary: #161616;
-  --text-secondary: #666666;
+  --bg-primary: #0A0908;
+  --bg-secondary: #121110;
+  --card: #141312;
+  --border: #292624;
+  --text-primary: #F0EDE8;
+  --text-secondary: #96918A;
 }
 
 .dark {

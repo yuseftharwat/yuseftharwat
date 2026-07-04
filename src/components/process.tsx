@@ -9,35 +9,47 @@ export function Process({ dict }: { dict: any }) {
   return (
     <section className="relative overflow-hidden py-section">
       {/* Background Image */}
-      <div className="absolute inset-0 z-0 bg-[url('/process-bg.png')] bg-cover bg-center bg-no-repeat" aria-hidden="true" />
-      <div className="absolute inset-0 z-0 bg-black/75" aria-hidden="true" />
+      <div className="absolute inset-0 z-0 bg-[url('/process-bg.png')] bg-cover bg-center bg-fixed bg-no-repeat" aria-hidden="true" />
+      <div className="absolute inset-0 z-0 bg-gradient-to-t from-black/95 via-black/80 to-black/90" aria-hidden="true" />
 
-      <div className="relative z-10 mx-auto max-w-content px-6 md:px-10">
-        <SectionHeading
-          eyebrow={dict.eyebrow}
-          title={dict.title}
-          description={dict.description}
-          className="[&_*]:text-white"
-        />
+      <div className="relative z-10 mx-auto max-w-site px-6 md:px-10">
+        <div className="mb-24">
+          <SectionHeading
+            eyebrow={dict.eyebrow}
+            title={dict.title}
+            description={dict.description}
+            className="[&_span]:text-[#C69C6D] [&_h2]:text-white [&_p]:text-white/60"
+          />
+        </div>
 
-        <ol className="relative mt-4 border-l border-white/20 pl-10">
+        <div className="relative mt-20 max-w-4xl mx-auto">
           {dict.steps.map((step: any, i: number) => (
-            <motion.li
+            <motion.div
               key={step.title}
-              initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 16 }}
+              initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 40 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-100px" }}
-              transition={{ duration: 0.6, delay: i * 0.08, ease: [0.16, 1, 0.3, 1] }}
-              className="relative pb-14 last:pb-0"
+              transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+              className="relative mb-32 last:mb-0 flex flex-col md:flex-row items-center gap-10 md:gap-20"
             >
-              <span className="absolute -left-[3.25rem] flex h-9 w-9 items-center justify-center rounded-full bg-white/10 border border-white/20 text-small font-medium text-white backdrop-blur-sm">
-                {i + 1}
-              </span>
-              <h3 className="font-heading text-card-title text-white">{step.title}</h3>
-              <p className="mt-2 max-w-md text-body text-white/70">{step.description}</p>
-            </motion.li>
+              {/* Giant Watermark Number */}
+              <div className="absolute -top-10 -left-10 md:-left-20 text-[10rem] md:text-[14rem] font-heading font-black text-white/[0.03] leading-none pointer-events-none select-none">
+                0{i + 1}
+              </div>
+
+              <div className="w-full md:w-1/3 text-[#C69C6D] font-heading text-4xl md:text-5xl font-bold pt-4">
+                {step.title}
+              </div>
+              
+              <div className="w-full md:w-2/3 relative">
+                <div className="hidden md:block absolute -left-10 top-2 bottom-0 w-px bg-white/10" />
+                <p className="text-lg md:text-xl text-white/70 font-light leading-relaxed">
+                  {step.description}
+                </p>
+              </div>
+            </motion.div>
           ))}
-        </ol>
+        </div>
       </div>
     </section>
   );
