@@ -15,12 +15,12 @@
 
 .dark {
   color-scheme: dark;
-  --bg-primary: #0F0F0F;
-  --bg-secondary: #1A1A1A;
-  --card: #141414;
-  --border: #333333;
-  --text-primary: #F5F5F5;
-  --text-secondary: #A3A3A3;
+  --bg-primary: #0A0908;
+  --bg-secondary: #121110;
+  --card: #141312;
+  --border: #292624;
+  --text-primary: #F0EDE8;
+  --text-secondary: #96918A;
 }
 
 * {

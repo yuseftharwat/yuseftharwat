@@ -87,7 +87,7 @@ export function ProjectCard({
         )}
 
         <span
-          className={`absolute bottom-5 left-5 rounded-full bg-white px-5 py-2.5 text-sm font-medium text-text-primary shadow-sm transition-all duration-300 ease-elegant ${
+          className={`absolute bottom-5 left-5 rounded-full bg-white px-5 py-2.5 text-sm font-medium text-black shadow-sm transition-all duration-300 ease-elegant hover:bg-black hover:text-white dark:bg-white dark:text-black dark:hover:bg-black dark:hover:text-white ${
             hovered ? "translate-y-0 opacity-100" : "translate-y-2 opacity-0"
           }`}
         >

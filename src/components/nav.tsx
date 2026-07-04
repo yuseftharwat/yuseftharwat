@@ -45,28 +45,37 @@ export function Nav({
       className={cn(
         "fixed inset-x-0 top-0 z-50 transition-all duration-300 ease-elegant",
         scrolled
-          ? "bg-bg-primary/80 shadow-[0_1px_0_0_rgba(22,22,22,0.06)] backdrop-blur-md py-3"
+          ? "bg-bg-primary/95 shadow-[0_1px_0_0_rgba(22,22,22,0.06)] backdrop-blur-md py-3"
           : "bg-transparent py-6"
       )}
     >
       <nav className="mx-auto flex max-w-site items-center justify-between px-6 md:px-10">
-        <Link href="/" className="font-heading text-lg font-medium tracking-tight">
+        <Link 
+          href="/" 
+          onClick={(e) => {
+            if (pathname === "/") {
+              e.preventDefault();
+              window.scrollTo({ top: 0, behavior: "smooth" });
+            }
+          }}
+          className="font-heading text-lg font-medium tracking-tight text-text-primary"
+        >
           Yusef Tharwat
         </Link>
 
         <ul className="hidden items-center gap-8 md:flex">
           <li>
-            <Link href="/#work" className="link-underline text-[15px] text-text-secondary transition-colors hover:text-text-primary">
+            <Link href="/#work" className="link-underline text-[15px] text-text-primary/80 transition-colors hover:text-text-primary">
               {dict.work}
             </Link>
           </li>
           <li>
-            <Link href="/#services" className="link-underline text-[15px] text-text-secondary transition-colors hover:text-text-primary">
+            <Link href="/#services" className="link-underline text-[15px] text-text-primary/80 transition-colors hover:text-text-primary">
               {dict.services}
             </Link>
           </li>
           <li>
-            <Link href="/#about" className="link-underline text-[15px] text-text-secondary transition-colors hover:text-text-primary">
+            <Link href="/#about" className="link-underline text-[15px] text-text-primary/80 transition-colors hover:text-text-primary">
               {dict.about}
             </Link>
           </li>
@@ -77,25 +86,25 @@ export function Nav({
             {dict.letsTalk}
           </Button>
           <div className="h-4 w-px bg-text-primary/10" />
+          <ThemeToggle />
           <button 
             onClick={toggleLanguage}
-            className="text-sm font-medium text-text-secondary transition-colors hover:text-text-primary" 
+            className="text-sm font-medium text-text-primary/80 transition-colors hover:text-text-primary" 
             aria-label="Switch language"
           >
             {locale === "en" ? "AR" : "EN"}
           </button>
-          <ThemeToggle />
         </div>
 
         <div className="flex items-center gap-4 md:hidden">
+          <ThemeToggle />
           <button 
             onClick={toggleLanguage}
-            className="text-sm font-medium text-text-secondary transition-colors hover:text-text-primary" 
+            className="text-sm font-medium text-text-primary/80 transition-colors hover:text-text-primary" 
             aria-label="Switch language"
           >
             {locale === "en" ? "AR" : "EN"}
           </button>
-          <ThemeToggle />
           <button
             type="button"
             aria-expanded={menuOpen}

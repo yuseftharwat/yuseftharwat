@@ -25,6 +25,8 @@ export interface Project {
   hoverStartTime?: number;
   hoverVideo?: string;
   videoAspectRatio?: string;
+  /** Optional Tailwind max-width class to constrain the video player on the project page, e.g. 'max-w-2xl' */
+  videoMaxWidth?: string;
   heroVideo: string;
   /** Mux playback ID, if hosting video on Mux. Takes precedence over heroVideo when present. */
   muxPlaybackId?: string;

@@ -28,11 +28,10 @@ export const metadata: Metadata = {
     "Yusef Tharwat is a 3D product visualization and motion designer creating commercial-quality CGI for brands, startups, and agencies.",
   icons: {
     icon: [
-      { url: "/favicon.ico", sizes: "32x32" },
-      { url: "/icon.png", type: "image/png", sizes: "512x512" },
+      { url: "/icon.jpeg", type: "image/jpeg" },
     ],
     apple: [
-      { url: "/icon.png", type: "image/png", sizes: "512x512" },
+      { url: "/icon.jpeg", type: "image/jpeg" },
     ],
   },
   openGraph: {
@@ -43,7 +42,7 @@ export const metadata: Metadata = {
       "Commercial-quality CGI, product animation, and motion design for premium brands.",
     images: [
       {
-        url: "/og-image.png",
+        url: "/og-image.jpeg",
         width: 1200,
         height: 630,
         alt: "Yusef Tharwat Portfolio Preview",
@@ -55,7 +54,7 @@ export const metadata: Metadata = {
     title: "Yusef Tharwat — 3D Product Visualization & Motion Design",
     description:
       "Commercial-quality CGI, product animation, and motion design for premium brands.",
-    images: ["/og-image.png"],
+    images: ["/og-image.jpeg"],
   },
   robots: {
     index: true,

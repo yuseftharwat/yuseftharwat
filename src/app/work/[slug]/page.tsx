@@ -89,8 +89,12 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
             poster={project.posterImage}
             className={cn(
               "w-full mb-16",
-              project.videoAspectRatio === "9/16" && "max-w-md mx-auto",
-              project.videoAspectRatio === "4/5" && "max-w-xl mx-auto"
+              project.videoMaxWidth ? `${project.videoMaxWidth} mx-auto` : (() => {
+                if (!project.videoAspectRatio) return "";
+                const [w, h] = project.videoAspectRatio.split("/").map(Number);
+                if (h > w * 1.1) return "max-w-md mx-auto"; // portrait
+                return "";
+              })()
             )}
             videoAspectRatio={project.videoAspectRatio}
           />
