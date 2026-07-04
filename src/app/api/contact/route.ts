@@ -29,14 +29,11 @@ export async function POST(request: Request) {
     return NextResponse.json({ ok: true, delivered: true });
   }
 
-  const canSendEmail = process.env.RESEND_API_KEY && process.env.CONTACT_FROM_EMAIL && process.env.CONTACT_TO_EMAIL;
-
-  if (!canSendEmail) {
-    console.log("New contact inquiry (email not configured, logging only):", parsed.data);
-    return NextResponse.json({ ok: true, delivered: false });
-  }
-
   try {
+    if (!process.env.RESEND_API_KEY) {
+      return NextResponse.json({ error: "RESEND_API_KEY is not configured" }, { status: 500 });
+    }
+
     const resend = new Resend(process.env.RESEND_API_KEY);
     
     // Beautifully formatted HTML email template
@@ -91,17 +88,22 @@ export async function POST(request: Request) {
       </div>
     `;
 
-    await resend.emails.send({
-      from: process.env.CONTACT_FROM_EMAIL!,
-      to: process.env.CONTACT_TO_EMAIL!,
+    const { data, error } = await resend.emails.send({
+      from: process.env.CONTACT_FROM_EMAIL || "onboarding@resend.dev",
+      to: "youssifqp123@gmail.com",
       reply_to: email,
       subject: `New Inquiry: ${projectType.replace("-", " ")} for ${company || name}`,
       html: htmlEmail,
     });
 
-    return NextResponse.json({ ok: true, delivered: true });
-  } catch (error) {
-    console.error("Resend send failed:", error);
-    return NextResponse.json({ error: "Delivery failed" }, { status: 502 });
+    if (error) {
+      console.error("Resend API returned an error:", error);
+      return NextResponse.json({ error: error.message || "Failed to send email" }, { status: 500 });
+    }
+
+    return NextResponse.json({ ok: true, delivered: true, id: data?.id });
+  } catch (error: any) {
+    console.error("Resend send threw an exception:", error);
+    return NextResponse.json({ error: error?.message || "Delivery failed" }, { status: 502 });
   }
 }
