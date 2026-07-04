@@ -17,24 +17,22 @@ export function SelectedWork({ projects, dict }: { projects: Project[]; dict: an
       <div className="absolute inset-0 z-0 bg-gradient-to-b from-black/90 via-black/80 to-black/95" aria-hidden="true" />
 
       <div className="relative z-10 mx-auto max-w-site px-6 md:px-10">
-        <div className="flex flex-col justify-between gap-8 md:flex-row md:items-end mb-24">
-          <SectionHeading
-            eyebrow={dict.eyebrow}
-            title={dict.title}
-            className="mb-0 [&_span]:text-[#C69C6D] [&_h2]:text-white"
-          />
-        </div>
+        <SectionHeading
+          eyebrow={dict.eyebrow}
+          title={dict.title}
+          className="mb-16 [&_span]:text-[#C69C6D] [&_h2]:text-white"
+        />
 
-        <div className="mt-14 flex flex-col gap-y-32">
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
           <AnimatePresence mode="popLayout">
             {filtered.map((project, index) => (
               <motion.div
                 key={project.slug}
                 layout
-                initial={{ opacity: 0, y: 30 }}
+                initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-100px" }}
-                transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+                viewport={{ once: true, margin: "-50px" }}
+                transition={{ duration: 0.5, delay: index * 0.06, ease: [0.16, 1, 0.3, 1] }}
               >
                 <ProjectCard project={project} openProjectLabel={dict.openProject} index={index} />
               </motion.div>
@@ -51,3 +49,4 @@ export function SelectedWork({ projects, dict }: { projects: Project[]; dict: an
     </section>
   );
 }
+

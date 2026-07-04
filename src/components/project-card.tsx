@@ -35,33 +35,26 @@ export function ProjectCard({
     videoRef.current?.pause();
   };
 
-  const isReversed = index % 2 !== 0;
-
   return (
     <Link
       href={`/work/${project.slug}`}
       onMouseEnter={onEnter}
       onMouseLeave={onLeave}
       onClick={() => sessionStorage.setItem("scrollY", String(window.scrollY))}
-      className={cn(
-        "group flex flex-col gap-8 md:gap-16 items-center",
-        isReversed ? "md:flex-row-reverse" : "md:flex-row"
-      )}
+      className="group block"
     >
-      <div className="relative aspect-[16/10] w-full md:w-2/3 overflow-hidden bg-bg-secondary">
+      <div className="relative aspect-[4/3] w-full overflow-hidden bg-bg-secondary">
         {project.thumbnailScale ? (
-          <div
-            className="absolute inset-0 flex items-center justify-center"
-          >
+          <div className="absolute inset-0 flex items-center justify-center">
             <div
-              className="relative h-full w-full transition-transform duration-700 ease-elegant group-hover:scale-[1.03]"
+              className="relative h-full w-full transition-transform duration-700 ease-elegant group-hover:scale-[1.05]"
               style={{ transform: `scale(${project.thumbnailScale})` }}
             >
               <Image
                 src={project.thumbnail}
                 alt={`${project.title} — ${project.industry}`}
                 fill
-                sizes="(min-width: 1024px) 66vw, 100vw"
+                sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
                 className="object-contain"
                 style={{ objectPosition: project.thumbnailObjectPosition ?? "center" }}
                 priority={priority}
@@ -73,8 +66,8 @@ export function ProjectCard({
             src={project.thumbnail}
             alt={`${project.title} — ${project.industry}`}
             fill
-            sizes="(min-width: 1024px) 66vw, 100vw"
-            className="object-cover transition-transform duration-700 ease-elegant group-hover:scale-[1.03]"
+            sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+            className="object-cover transition-transform duration-700 ease-elegant group-hover:scale-[1.05]"
             style={{ objectPosition: project.thumbnailObjectPosition ?? "center" }}
             priority={priority}
           />
@@ -91,25 +84,36 @@ export function ProjectCard({
             className="absolute inset-0 h-full w-full object-cover opacity-0 transition-all duration-700 ease-elegant"
             style={{
               opacity: hovered ? 1 : 0,
-              transform: hovered ? `scale(${project.videoHoverScale || 1.10})` : "scale(1)",
+              transform: hovered ? `scale(${project.videoHoverScale || 1.05})` : "scale(1)",
             }}
           />
         )}
+
+        {/* Hover overlay */}
+        <div className={cn(
+          "absolute inset-0 bg-black/40 transition-opacity duration-300",
+          hovered ? "opacity-100" : "opacity-0"
+        )} />
+
+        <span
+          className={cn(
+            "absolute bottom-4 left-4 text-[10px] font-semibold uppercase tracking-[0.15em] text-white transition-all duration-300",
+            hovered ? "translate-y-0 opacity-100" : "translate-y-2 opacity-0"
+          )}
+        >
+          {openProjectLabel} →
+        </span>
       </div>
 
-      <div className="w-full md:w-1/3 flex flex-col justify-center">
-        <span className="text-[11px] font-semibold uppercase tracking-[0.2em] text-[#C69C6D] mb-4">
-          {project.industry} — {project.year}
-        </span>
-        <h3 className="font-heading text-4xl md:text-5xl font-bold text-white mb-6 group-hover:text-[#C69C6D] transition-colors duration-500">
+      <div className="mt-4">
+        <h3 className="font-heading text-xl font-bold text-white group-hover:text-[#C69C6D] transition-colors duration-300">
           {project.title}
         </h3>
-        
-        <div className="mt-4 flex items-center gap-3 text-[11px] font-semibold uppercase tracking-[0.15em] text-white/50 group-hover:text-white transition-colors duration-300">
-          {openProjectLabel}
-          <div className="h-px w-8 bg-white/30 group-hover:w-12 group-hover:bg-white transition-all duration-300" />
-        </div>
+        <p className="mt-1 text-[11px] uppercase tracking-[0.15em] text-white/40">
+          {project.industry} — {project.year}
+        </p>
       </div>
     </Link>
   );
 }
+
