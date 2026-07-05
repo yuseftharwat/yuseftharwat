@@ -9,6 +9,8 @@ const schema = z.object({
   projectType: z.string().min(1),
   budget: z.string().min(1),
   message: z.string().min(10),
+  countryCode: z.string().optional(),
+  phoneNumber: z.string().optional(),
   honeypot: z.string().max(0).optional(),
 });
 
@@ -20,7 +22,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Invalid submission" }, { status: 400 });
   }
 
-  const { name, email, company, projectType, budget, message, honeypot } = parsed.data;
+  const { name, email, company, projectType, budget, message, countryCode, phoneNumber, honeypot } = parsed.data;
 
   // Spam protection: honeypot check
   if (honeypot) {
@@ -61,6 +63,12 @@ export async function POST(request: Request) {
                   <td style="padding: 4px 0; font-size: 14px; color: #6b7280;">Company</td>
                   <td style="padding: 4px 0; font-size: 15px; color: #111827; font-weight: 500;">${company || "—"}</td>
                 </tr>
+                ${countryCode && phoneNumber ? `
+                <tr>
+                  <td style="padding: 4px 0; font-size: 14px; color: #6b7280;">WhatsApp</td>
+                  <td style="padding: 4px 0; font-size: 15px; color: #111827; font-weight: 500;">${countryCode} ${phoneNumber}</td>
+                </tr>
+                ` : ''}
               </table>
             </div>
 
