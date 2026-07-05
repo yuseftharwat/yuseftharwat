@@ -54,27 +54,6 @@ export function ProjectCard({
     deactivatePreview();
   };
 
-  const onTouchStart = (event: React.TouchEvent<HTMLAnchorElement>) => {
-    onAutoScrollPause?.();
-    const touch = event.touches[0];
-    touchStartRef.current = { x: touch.clientX, y: touch.clientY };
-    didScrollRef.current = false;
-    activatePreview();
-  };
-
-  const onTouchMove = (event: React.TouchEvent<HTMLAnchorElement>) => {
-    const start = touchStartRef.current;
-    if (!start) return;
-
-    const touch = event.touches[0];
-    const movedX = Math.abs(touch.clientX - start.x);
-    const movedY = Math.abs(touch.clientY - start.y);
-
-    if (movedX > TOUCH_MOVE_THRESHOLD || movedY > TOUCH_MOVE_THRESHOLD) {
-      didScrollRef.current = true;
-      deactivatePreview();
-    }
-  };
 
   const onTouchEnd = () => {
     touchStartRef.current = null;
@@ -83,14 +62,9 @@ export function ProjectCard({
   };
 
   return (
-    <Link
-      href={`/work/${project.slug}`}
+    <div
       onMouseEnter={onEnter}
       onMouseLeave={onLeave}
-      onTouchStart={onTouchStart}
-      onTouchMove={onTouchMove}
-      onTouchEnd={onTouchEnd}
-      onTouchCancel={onTouchEnd}
       onClick={(event) => {
         if (didScrollRef.current) {
           event.preventDefault();
@@ -98,14 +72,16 @@ export function ProjectCard({
           return;
         }
         sessionStorage.setItem("scrollY", String(window.scrollY));
+        window.location.href = `/work/${project.slug}`;
       }}
-      className="group block"
+      className="group block relative cursor-pointer"
+      style={{ touchAction: "pan-y" }}
     >
       <div className="relative aspect-[4/3] w-full overflow-hidden bg-bg-secondary">
         {project.thumbnailScale ? (
           <div className="absolute inset-0 flex items-center justify-center">
             <div
-              className="relative h-full w-full transition-transform duration-700 ease-elegant"
+              className="relative h-full w-full transition-transform duration-700 ease-elegant pointer-events-none"
               style={{
                 transform: previewActive
                   ? `scale(${Number(project.thumbnailScale) * 1.05})`
@@ -117,7 +93,7 @@ export function ProjectCard({
                 alt={`${project.title} — ${project.industry}`}
                 fill
                 sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
-                className="object-contain"
+                className="object-contain pointer-events-none"
                 style={{ objectPosition: project.thumbnailObjectPosition ?? "center" }}
                 priority={priority}
               />
@@ -130,7 +106,7 @@ export function ProjectCard({
             fill
             sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
             className={cn(
-              "object-cover transition-transform duration-700 ease-elegant",
+              "object-cover transition-transform duration-700 ease-elegant pointer-events-none",
               previewActive && "scale-[1.05]"
             )}
             style={{ objectPosition: project.thumbnailObjectPosition ?? "center" }}
@@ -146,7 +122,7 @@ export function ProjectCard({
             loop
             playsInline
             preload="none"
-            className="absolute inset-0 h-full w-full object-cover opacity-0 transition-all duration-700 ease-elegant"
+            className="absolute inset-0 h-full w-full object-cover opacity-0 transition-all duration-700 ease-elegant pointer-events-none"
             style={{
               opacity: previewActive ? 1 : 0,
               transform: previewActive ? `scale(${project.videoHoverScale || 1.05})` : "scale(1)",
@@ -184,6 +160,6 @@ export function ProjectCard({
           {project.industry} — {project.year}
         </p>
       </div>
-    </Link>
+    </div>
   );
 }

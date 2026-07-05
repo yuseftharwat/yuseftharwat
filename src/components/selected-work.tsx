@@ -8,8 +8,8 @@ import type { Project } from "@/lib/types";
 import { cn } from "@/lib/utils";
 
 const SCROLL_SPEED_DESKTOP = 0.5; // pixels per frame (~30px/sec at 60fps)
-const SCROLL_SPEED_MOBILE = 0.75; // slightly faster than desktop, but still readable on phone
-const TOUCH_PAUSE_MS = 1000;
+const SCROLL_SPEED_MOBILE = 1.0; // faster on mobile for better visibility
+const TOUCH_PAUSE_MS = 500; // shorter pause on mobile
 
 export function SelectedWork({ projects, dict, locale }: { projects: Project[]; dict: any; locale?: string }) {
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -17,6 +17,7 @@ export function SelectedWork({ projects, dict, locale }: { projects: Project[]; 
   const autoScrollPausedRef = useRef(false);
   const scrollSpeedRef = useRef(SCROLL_SPEED_DESKTOP);
   const touchPauseTimerRef = useRef<ReturnType<typeof setTimeout>>();
+  const touchStartRef = useRef<{ x: number; y: number } | null>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(false);
   const isRTL = locale === 'ar';
@@ -65,39 +66,11 @@ export function SelectedWork({ projects, dict, locale }: { projects: Project[]; 
     };
   }, [checkScroll, filtered.length]);
 
-  // Pause auto-scroll on hover — desktop only
-  useEffect(() => {
-    const el = scrollRef.current;
-    if (!el) return;
-
-    const hoverMedia = window.matchMedia("(hover: hover) and (pointer: fine)");
-    if (!hoverMedia.matches) return;
-
-    const onEnter = () => {
-      autoScrollPausedRef.current = true;
-    };
-    const onLeave = () => {
-      autoScrollPausedRef.current = false;
-    };
-
-    el.addEventListener("mouseenter", onEnter);
-    el.addEventListener("mouseleave", onLeave);
-    return () => {
-      el.removeEventListener("mouseenter", onEnter);
-      el.removeEventListener("mouseleave", onLeave);
-    };
-  }, []);
 
   // Pause auto-scroll on touch — stop for 1s when finger touches projects
   useEffect(() => {
     const el = scrollRef.current;
     if (!el) return;
-
-    const isTouchLike = () =>
-      window.matchMedia("(pointer: coarse)").matches ||
-      window.matchMedia("(max-width: 767px)").matches;
-
-    if (!isTouchLike()) return;
 
     let userInteracting = false;
 
@@ -136,6 +109,21 @@ export function SelectedWork({ projects, dict, locale }: { projects: Project[]; 
       const el = scrollRef.current;
       if (el && !autoScrollPausedRef.current) {
         const maxScroll = el.scrollWidth - el.clientWidth;
+
+        // Only scroll if there's content to scroll
+        if (maxScroll <= 0) {
+          rafRef.current = requestAnimationFrame(tick);
+          return;
+        }
+
+        // Check if element is in viewport (important for iOS Safari)
+        const rect = el.getBoundingClientRect();
+        const isInViewport = rect.top < window.innerHeight && rect.bottom > 0;
+
+        if (!isInViewport) {
+          rafRef.current = requestAnimationFrame(tick);
+          return;
+        }
 
         if (isRTL) {
           // RTL: scroll from right to left (decrease scrollLeft)
@@ -247,8 +235,13 @@ export function SelectedWork({ projects, dict, locale }: { projects: Project[]; 
       {/* Horizontal Scroll Container — full bleed */}
       <div
         ref={scrollRef}
-        className="relative z-10 flex gap-6 overflow-x-auto px-6 md:px-10 pb-4 no-scrollbar touch-pan-x"
-        style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+        className="relative z-10 flex gap-6 overflow-x-scroll px-6 md:px-10 pb-4 no-scrollbar"
+        style={{
+          scrollbarWidth: "none",
+          msOverflowStyle: "none",
+          WebkitOverflowScrolling: "touch",
+          overscrollBehavior: "contain"
+        }}
       >
         {/* Left spacer to align with max-w-site */}
         <div className="hidden lg:block shrink-0" style={{ width: "max(0px, calc((100vw - 1400px) / 2))" }} />
