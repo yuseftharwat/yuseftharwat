@@ -34,6 +34,7 @@ export function Nav({
   const toggleLanguage = () => {
     const newLocale = locale === "en" ? "ar" : "en";
     document.cookie = `NEXT_LOCALE=${newLocale}; path=/; max-age=31536000`;
+    localStorage.setItem("locale", newLocale);
     router.refresh();
   };
 

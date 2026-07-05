@@ -1,176 +1,233 @@
 "use client";
 
-import { useRef, useState, useCallback, useEffect } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { SectionHeading } from "@/components/ui/section-heading";
 import { ProjectCard } from "@/components/project-card";
 import type { Project } from "@/lib/types";
 import { cn } from "@/lib/utils";
 
-const SCROLL_SPEED_DESKTOP = 0.5; // pixels per frame (~30px/sec at 60fps)
-const SCROLL_SPEED_MOBILE = 1.0; // faster on mobile for better visibility
-const TOUCH_PAUSE_MS = 500; // shorter pause on mobile
+const SCROLL_SPEED_DESKTOP = 0.6; // pixels per frame (~36px/sec at 60fps) - increased by 20%
+const SCROLL_SPEED_MOBILE = 0.95; // faster on mobile for better visibility - increased by ~19%
 
 export function SelectedWork({ projects, dict, locale }: { projects: Project[]; dict: any; locale?: string }) {
-  const scrollRef = useRef<HTMLDivElement>(null);
-  const rafRef = useRef<number>();
-  const autoScrollPausedRef = useRef(false);
-  const scrollSpeedRef = useRef(SCROLL_SPEED_DESKTOP);
-  const touchPauseTimerRef = useRef<ReturnType<typeof setTimeout>>();
-  const touchStartRef = useRef<{ x: number; y: number } | null>(null);
-  const [canScrollLeft, setCanScrollLeft] = useState(false);
-  const [canScrollRight, setCanScrollRight] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const trackRef = useRef<HTMLDivElement>(null);
+  const autoScrollRef = useRef<number>();
+  const isDraggingRef = useRef(false);
   const isRTL = locale === 'ar';
+  const [translateX, setTranslateX] = useState(0);
+  const [singleSetWidth, setSingleSetWidth] = useState(0);
+  const [mobileActivePreview, setMobileActivePreview] = useState<string | null>(null);
 
-  const filtered = projects;
+  // Duplicate projects 3 times for seamless loop (enough to fill viewport)
+  const marqueeProjects = [...projects, ...projects, ...projects];
 
-  const pauseAutoScrollFor = useCallback((ms = TOUCH_PAUSE_MS) => {
-    autoScrollPausedRef.current = true;
-    if (touchPauseTimerRef.current) clearTimeout(touchPauseTimerRef.current);
-    touchPauseTimerRef.current = setTimeout(() => {
-      autoScrollPausedRef.current = false;
-    }, ms);
-  }, []);
-
-  const pauseAutoScrollOnTouch = useCallback(() => {
-    autoScrollPausedRef.current = true;
-    if (touchPauseTimerRef.current) clearTimeout(touchPauseTimerRef.current);
-  }, []);
-
-  const checkScroll = useCallback(() => {
-    const el = scrollRef.current;
-    if (!el) return;
-    const maxScroll = el.scrollWidth - el.clientWidth;
-    const hasOverflow = maxScroll > 10;
-    setCanScrollLeft(hasOverflow && el.scrollLeft > 10);
-    setCanScrollRight(hasOverflow && el.scrollLeft < maxScroll - 10);
-  }, []);
-
+  // Calculate single set width
   useEffect(() => {
-    const el = scrollRef.current;
-    if (!el) return;
+    const updateWidth = () => {
+      if (trackRef.current) {
+        const card = trackRef.current.querySelector('[data-project-card]') as HTMLElement;
+        const cardWidth = card?.offsetWidth || 400;
+        const gap = 24;
+        setSingleSetWidth(projects.length * (cardWidth + gap));
+      }
+    };
+    updateWidth();
+    window.addEventListener('resize', updateWidth);
+    return () => window.removeEventListener('resize', updateWidth);
+  }, [projects.length]);
 
-    const updateScrollSpeed = () => {
-      scrollSpeedRef.current = window.matchMedia("(max-width: 767px)").matches
+  // Continuous auto-scroll using requestAnimationFrame
+  useEffect(() => {
+    if (singleSetWidth === 0) return;
+
+    const animate = () => {
+      if (isDraggingRef.current) {
+        autoScrollRef.current = requestAnimationFrame(animate);
+        return;
+      }
+
+      const speed = window.matchMedia("(max-width: 767px)").matches
         ? SCROLL_SPEED_MOBILE
         : SCROLL_SPEED_DESKTOP;
-      checkScroll();
+
+      setTranslateX((prev) => {
+        const newX = prev + speed;
+        // Reset when we've scrolled past one full set
+        if (newX >= singleSetWidth) {
+          return newX - singleSetWidth;
+        }
+        return newX;
+      });
+
+      autoScrollRef.current = requestAnimationFrame(animate);
     };
 
-    updateScrollSpeed();
-    el.addEventListener("scroll", checkScroll, { passive: true });
-    window.addEventListener("resize", updateScrollSpeed);
+    autoScrollRef.current = requestAnimationFrame(animate);
     return () => {
-      el.removeEventListener("scroll", checkScroll);
-      window.removeEventListener("resize", updateScrollSpeed);
+      if (autoScrollRef.current) cancelAnimationFrame(autoScrollRef.current);
     };
-  }, [checkScroll, filtered.length]);
+  }, [singleSetWidth]);
 
-
-  // Pause auto-scroll on touch — stop for 1s when finger touches projects
+  // Touch gesture detection
   useEffect(() => {
-    const el = scrollRef.current;
-    if (!el) return;
+    const container = containerRef.current;
+    if (!container) return;
 
-    let userInteracting = false;
+    const touchStartRef = { x: 0, y: 0 };
+    const gestureLockedRef = { horizontal: false };
 
-    const onTouchStart = () => {
-      userInteracting = true;
-      pauseAutoScrollOnTouch();
+    const onTouchStart = (e: TouchEvent) => {
+      const touch = e.touches[0];
+      touchStartRef.x = touch.clientX;
+      touchStartRef.y = touch.clientY;
+      gestureLockedRef.horizontal = false;
+      // Don't set isDraggingRef yet - wait for gesture direction
+    };
+
+    const onTouchMove = (e: TouchEvent) => {
+      const touch = e.touches[0];
+      const deltaX = touch.clientX - touchStartRef.x;
+      const deltaY = touch.clientY - touchStartRef.y;
+
+      // Lock gesture direction
+      if (!gestureLockedRef.horizontal && (Math.abs(deltaX) > 10 || Math.abs(deltaY) > 10)) {
+        gestureLockedRef.horizontal = Math.abs(deltaX) > Math.abs(deltaY);
+        // Only pause autoplay when horizontal gesture is detected
+        if (gestureLockedRef.horizontal) {
+          isDraggingRef.current = true;
+        }
+      }
+
+      // Only prevent default and handle drag for horizontal gestures
+      if (gestureLockedRef.horizontal) {
+        e.preventDefault();
+        setTranslateX((prev) => {
+          const newX = prev - deltaX; // Invert direction for natural feel
+          // Handle loop during drag
+          if (newX >= singleSetWidth) return newX - singleSetWidth;
+          if (newX < 0) return newX + singleSetWidth;
+          return newX;
+        });
+        touchStartRef.x = touch.clientX;
+      }
     };
 
     const onTouchEnd = () => {
-      userInteracting = false;
-      pauseAutoScrollFor(TOUCH_PAUSE_MS);
+      isDraggingRef.current = false;
+      gestureLockedRef.horizontal = false;
     };
 
-    const onScroll = () => {
-      if (!userInteracting) return;
-      pauseAutoScrollFor(TOUCH_PAUSE_MS);
-    };
-
-    el.addEventListener("touchstart", onTouchStart, { passive: true });
-    el.addEventListener("touchend", onTouchEnd, { passive: true });
-    el.addEventListener("touchcancel", onTouchEnd, { passive: true });
-    el.addEventListener("scroll", onScroll, { passive: true });
+    container.addEventListener('touchstart', onTouchStart, { passive: false });
+    container.addEventListener('touchmove', onTouchMove, { passive: false });
+    container.addEventListener('touchend', onTouchEnd);
+    container.addEventListener('touchcancel', onTouchEnd);
 
     return () => {
-      el.removeEventListener("touchstart", onTouchStart);
-      el.removeEventListener("touchend", onTouchEnd);
-      el.removeEventListener("touchcancel", onTouchEnd);
-      el.removeEventListener("scroll", onScroll);
-      if (touchPauseTimerRef.current) clearTimeout(touchPauseTimerRef.current);
+      container.removeEventListener('touchstart', onTouchStart);
+      container.removeEventListener('touchmove', onTouchMove);
+      container.removeEventListener('touchend', onTouchEnd);
+      container.removeEventListener('touchcancel', onTouchEnd);
     };
-  }, [pauseAutoScrollFor, pauseAutoScrollOnTouch]);
+  }, [singleSetWidth]);
 
-  // Continuous auto-scroll
+  // Desktop drag support
   useEffect(() => {
-    const tick = () => {
-      const el = scrollRef.current;
-      if (el && !autoScrollPausedRef.current) {
-        const maxScroll = el.scrollWidth - el.clientWidth;
+    const container = containerRef.current;
+    if (!container) return;
 
-        // Only scroll if there's content to scroll
-        if (maxScroll <= 0) {
-          rafRef.current = requestAnimationFrame(tick);
-          return;
-        }
+    const dragStartRef = { x: 0, translateX: 0 };
 
-        // Check if element is in viewport (important for iOS Safari)
-        const rect = el.getBoundingClientRect();
-        const isInViewport = rect.top < window.innerHeight && rect.bottom > 0;
-
-        if (!isInViewport) {
-          rafRef.current = requestAnimationFrame(tick);
-          return;
-        }
-
-        if (isRTL) {
-          // RTL: scroll from right to left (decrease scrollLeft)
-          if (el.scrollLeft <= -maxScroll + 1) {
-            el.scrollLeft = 0;
-          } else {
-            el.scrollLeft -= scrollSpeedRef.current;
-          }
-        } else {
-          // LTR: scroll from left to right (increase scrollLeft)
-          if (el.scrollLeft >= maxScroll - 1) {
-            el.scrollLeft = 0;
-          } else {
-            el.scrollLeft += scrollSpeedRef.current;
-          }
-        }
-      }
-      rafRef.current = requestAnimationFrame(tick);
+    const onMouseDown = (e: MouseEvent) => {
+      dragStartRef.x = e.clientX;
+      dragStartRef.translateX = translateX;
+      isDraggingRef.current = true;
     };
 
-    rafRef.current = requestAnimationFrame(tick);
+    const onMouseMove = (e: MouseEvent) => {
+      if (!isDraggingRef.current) return;
+
+      const deltaX = e.clientX - dragStartRef.x;
+      setTranslateX(() => {
+        const newX = dragStartRef.translateX + deltaX;
+        // Handle loop during drag
+        if (newX >= singleSetWidth) return newX - singleSetWidth;
+        if (newX < 0) return newX + singleSetWidth;
+        return newX;
+      });
+    };
+
+    const onMouseUp = () => {
+      isDraggingRef.current = false;
+    };
+
+    const onMouseLeave = () => {
+      isDraggingRef.current = false;
+    };
+
+    container.addEventListener('mousedown', onMouseDown);
+    window.addEventListener('mousemove', onMouseMove);
+    window.addEventListener('mouseup', onMouseUp);
+    container.addEventListener('mouseleave', onMouseLeave);
+
     return () => {
-      if (rafRef.current) cancelAnimationFrame(rafRef.current);
+      container.removeEventListener('mousedown', onMouseDown);
+      window.removeEventListener('mousemove', onMouseMove);
+      window.removeEventListener('mouseup', onMouseUp);
+      container.removeEventListener('mouseleave', onMouseLeave);
     };
-  }, [isRTL]);
+  }, [singleSetWidth, translateX]);
 
+  // Manual scroll with arrows
   const scroll = useCallback(
     (direction: "left" | "right") => {
-      const el = scrollRef.current;
-      if (!el) return;
+      const card = trackRef.current?.querySelector('[data-project-card]') as HTMLElement;
+      const cardWidth = card?.offsetWidth || 400;
+      const scrollAmount = cardWidth + 24;
 
-      const card = el.querySelector<HTMLElement>("[data-project-card]");
-      const cardWidth = card?.offsetWidth ?? 400;
-      const scrollAmount = cardWidth + 24; // card width + gap (gap-6)
-
-      if (isRTL) {
-        // RTL: reverse the direction for correct visual behavior
-        // "left" button should scroll right (positive), "right" button should scroll left (negative)
-        el.scrollLeft += direction === "left" ? scrollAmount : -scrollAmount;
-      } else {
-        // LTR: normal behavior
-        el.scrollLeft += direction === "left" ? -scrollAmount : scrollAmount;
-      }
-      checkScroll();
+      setTranslateX((prev) => {
+        const newX = direction === "left" ? prev - scrollAmount : prev + scrollAmount;
+        if (newX >= singleSetWidth) return newX - singleSetWidth;
+        if (newX < 0) return newX + singleSetWidth;
+        return newX;
+      });
     },
-    [checkScroll, isRTL]
+    [singleSetWidth]
   );
+
+  // Mobile preview handlers
+  const handleProjectTap = useCallback((projectSlug: string) => {
+    if (mobileActivePreview === projectSlug) {
+      // Second tap on same project - navigate
+      window.location.href = `/work/${projectSlug}`;
+    } else {
+      // First tap or different project - activate preview
+      setMobileActivePreview(projectSlug);
+    }
+  }, [mobileActivePreview]);
+
+  const clearMobilePreview = useCallback(() => {
+    setMobileActivePreview(null);
+  }, []);
+
+  // Detect touch device
+  const isTouchDevice = typeof window !== 'undefined' && 'ontouchstart' in window;
+
+  // Handle tap outside to clear preview
+  useEffect(() => {
+    const handleOutsideTap = (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+      if (!target.closest('[data-project-card]')) {
+        clearMobilePreview();
+      }
+    };
+
+    if (isTouchDevice) {
+      document.addEventListener('click', handleOutsideTap);
+      return () => document.removeEventListener('click', handleOutsideTap);
+    }
+  }, [isTouchDevice, clearMobilePreview]);
 
   return (
     <section id="work" className="relative py-section overflow-hidden">
@@ -234,43 +291,46 @@ export function SelectedWork({ projects, dict, locale }: { projects: Project[]; 
 
       {/* Horizontal Scroll Container — full bleed */}
       <div
-        ref={scrollRef}
-        className="relative z-10 flex gap-6 overflow-x-scroll px-6 md:px-10 pb-4 no-scrollbar"
-        style={{
-          scrollbarWidth: "none",
-          msOverflowStyle: "none",
-          WebkitOverflowScrolling: "touch",
-          overscrollBehavior: "contain"
-        }}
+        ref={containerRef}
+        className="relative z-10 px-6 md:px-10 pb-4 overflow-hidden"
       >
-        {/* Left spacer to align with max-w-site */}
-        <div className="hidden lg:block shrink-0" style={{ width: "max(0px, calc((100vw - 1400px) / 2))" }} />
+        <div
+          ref={trackRef}
+          className="flex gap-6"
+          style={{
+            transform: `translateX(-${translateX}px)`,
+            willChange: 'transform'
+          }}
+        >
+          {/* Left spacer to align with max-w-site */}
+          <div className="hidden lg:block shrink-0" style={{ width: "max(0px, calc((100vw - 1400px) / 2))" }} />
 
-        {filtered.map((project, index) => (
-          <motion.div
-            key={project.slug}
-            data-project-card
-            initial={{ opacity: 0, x: 40 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: index * 0.08, ease: [0.16, 1, 0.3, 1] }}
-            className="shrink-0 w-[80vw] sm:w-[45vw] lg:w-[30vw] xl:w-[26vw]"
-          >
-            <ProjectCard
-              project={project}
-              openProjectLabel={dict.openProject}
-              index={index}
-              onAutoScrollPause={pauseAutoScrollOnTouch}
-              onAutoScrollResume={() => pauseAutoScrollFor(TOUCH_PAUSE_MS)}
-            />
-          </motion.div>
-        ))}
+          {marqueeProjects.map((project: Project, index: number) => (
+            <motion.div
+              key={`${project.slug}-${index}`}
+              data-project-card
+              initial={{ opacity: 0, x: 40 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: (index % projects.length) * 0.08, ease: [0.16, 1, 0.3, 1] }}
+              className="shrink-0 w-[80vw] sm:w-[45vw] lg:w-[30vw] xl:w-[26vw]"
+            >
+              <ProjectCard
+                project={project}
+                openProjectLabel={dict.openProject}
+                index={index}
+                mobilePreviewActive={mobileActivePreview === project.slug}
+                onMobileTap={isTouchDevice ? () => handleProjectTap(project.slug) : undefined}
+              />
+            </motion.div>
+          ))}
 
-        {/* Right spacer */}
-        <div className="hidden lg:block shrink-0" style={{ width: "max(0px, calc((100vw - 1400px) / 2))" }} />
+          {/* Right spacer */}
+          <div className="hidden lg:block shrink-0" style={{ width: "max(0px, calc((100vw - 1400px) / 2))" }} />
+        </div>
       </div>
 
-      {filtered.length === 0 && (
+      {projects.length === 0 && (
         <div className="relative z-10 mx-auto max-w-site px-6 md:px-10">
           <p className="mt-14 text-lg text-text-secondary dark:text-white/50">
             {dict.noProjects}

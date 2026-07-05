@@ -1,32 +1,28 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import type { Project } from "@/lib/types";
 import { cn } from "@/lib/utils";
-
-const TOUCH_MOVE_THRESHOLD = 12;
 
 export function ProjectCard({
   project,
   priority = false,
   openProjectLabel = "Open Project",
   index = 0,
-  onAutoScrollPause,
-  onAutoScrollResume,
+  mobilePreviewActive = false,
+  onMobileTap,
 }: {
   project: Project;
   priority?: boolean;
   openProjectLabel?: string;
   index?: number;
-  onAutoScrollPause?: () => void;
-  onAutoScrollResume?: () => void;
+  mobilePreviewActive?: boolean;
+  onMobileTap?: () => void;
 }) {
   const [previewActive, setPreviewActive] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
-  const touchStartRef = useRef<{ x: number; y: number } | null>(null);
-  const didScrollRef = useRef(false);
 
   const activatePreview = () => {
     setPreviewActive(true);
@@ -46,44 +42,46 @@ export function ProjectCard({
     videoRef.current?.pause();
   };
 
-  const onEnter = () => {
-    activatePreview();
-  };
+  const isPreviewActive = previewActive || mobilePreviewActive;
 
-  const onLeave = () => {
-    deactivatePreview();
-  };
-
-
-  const onTouchEnd = () => {
-    touchStartRef.current = null;
-    deactivatePreview();
-    onAutoScrollResume?.();
-  };
+  // Handle mobile preview video playback
+  useEffect(() => {
+    if (mobilePreviewActive && videoRef.current) {
+      if (
+        project.hoverStartTime !== undefined &&
+        videoRef.current.currentTime < project.hoverStartTime
+      ) {
+        videoRef.current.currentTime = project.hoverStartTime;
+      }
+      videoRef.current.play().catch(() => {});
+    } else {
+      // Always pause when not active (regardless of desktop hover)
+      videoRef.current?.pause();
+    }
+  }, [mobilePreviewActive, project.hoverStartTime]);
 
   return (
-    <div
-      onMouseEnter={onEnter}
-      onMouseLeave={onLeave}
-      onClick={(event) => {
-        if (didScrollRef.current) {
-          event.preventDefault();
-          didScrollRef.current = false;
-          return;
+    <Link
+      href={`/work/${project.slug}`}
+      onMouseEnter={activatePreview}
+      onMouseLeave={deactivatePreview}
+      onClick={(e) => {
+        if (onMobileTap) {
+          e.preventDefault();
+          onMobileTap();
+        } else {
+          sessionStorage.setItem("scrollY", String(window.scrollY));
         }
-        sessionStorage.setItem("scrollY", String(window.scrollY));
-        window.location.href = `/work/${project.slug}`;
       }}
-      className="group block relative cursor-pointer"
-      style={{ touchAction: "pan-y" }}
+      className="group block"
     >
       <div className="relative aspect-[4/3] w-full overflow-hidden bg-bg-secondary">
         {project.thumbnailScale ? (
           <div className="absolute inset-0 flex items-center justify-center">
             <div
-              className="relative h-full w-full transition-transform duration-700 ease-elegant pointer-events-none"
+              className="relative h-full w-full transition-transform duration-700 ease-elegant"
               style={{
-                transform: previewActive
+                transform: isPreviewActive
                   ? `scale(${Number(project.thumbnailScale) * 1.05})`
                   : `scale(${project.thumbnailScale})`,
               }}
@@ -93,7 +91,7 @@ export function ProjectCard({
                 alt={`${project.title} — ${project.industry}`}
                 fill
                 sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
-                className="object-contain pointer-events-none"
+                className="object-contain"
                 style={{ objectPosition: project.thumbnailObjectPosition ?? "center" }}
                 priority={priority}
               />
@@ -106,8 +104,8 @@ export function ProjectCard({
             fill
             sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
             className={cn(
-              "object-cover transition-transform duration-700 ease-elegant pointer-events-none",
-              previewActive && "scale-[1.05]"
+              "object-cover transition-transform duration-700 ease-elegant",
+              isPreviewActive && "scale-[1.05]"
             )}
             style={{ objectPosition: project.thumbnailObjectPosition ?? "center" }}
             priority={priority}
@@ -122,10 +120,10 @@ export function ProjectCard({
             loop
             playsInline
             preload="none"
-            className="absolute inset-0 h-full w-full object-cover opacity-0 transition-all duration-700 ease-elegant pointer-events-none"
+            className="absolute inset-0 h-full w-full object-cover opacity-0 transition-all duration-700 ease-elegant"
             style={{
-              opacity: previewActive ? 1 : 0,
-              transform: previewActive ? `scale(${project.videoHoverScale || 1.05})` : "scale(1)",
+              opacity: isPreviewActive ? 1 : 0,
+              transform: isPreviewActive ? `scale(${project.videoHoverScale || 1.05})` : "scale(1)",
             }}
           />
         )}
@@ -133,14 +131,14 @@ export function ProjectCard({
         <div
           className={cn(
             "absolute inset-0 bg-black/40 transition-opacity duration-300",
-            previewActive ? "opacity-100" : "opacity-0"
+            isPreviewActive ? "opacity-100" : "opacity-0"
           )}
         />
 
         <span
           className={cn(
             "absolute bottom-4 left-4 text-[10px] font-semibold uppercase tracking-[0.15em] text-white transition-all duration-300",
-            previewActive ? "translate-y-0 opacity-100" : "translate-y-2 opacity-0"
+            isPreviewActive ? "translate-y-0 opacity-100" : "translate-y-2 opacity-0"
           )}
         >
           {openProjectLabel} →
@@ -151,7 +149,7 @@ export function ProjectCard({
         <h3
           className={cn(
             "font-heading text-xl font-bold text-white transition-colors duration-300",
-            previewActive && "text-accent"
+            isPreviewActive && "text-accent"
           )}
         >
           {project.title}
@@ -160,6 +158,6 @@ export function ProjectCard({
           {project.industry} — {project.year}
         </p>
       </div>
-    </div>
+    </Link>
   );
 }
