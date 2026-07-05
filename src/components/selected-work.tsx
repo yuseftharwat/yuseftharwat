@@ -15,6 +15,7 @@ export function SelectedWork({ projects, dict, locale }: { projects: Project[]; 
   const trackRef = useRef<HTMLDivElement>(null);
   const autoScrollRef = useRef<number>();
   const isDraggingRef = useRef(false);
+  const resumeTimeoutRef = useRef<number>();
   const isRTL = locale === 'ar';
   const [translateX, setTranslateX] = useState(0);
   const [singleSetWidth, setSingleSetWidth] = useState(0);
@@ -57,6 +58,9 @@ export function SelectedWork({ projects, dict, locale }: { projects: Project[]; 
         // Reset when we've scrolled past one full set
         if (newX >= singleSetWidth) {
           return newX - singleSetWidth;
+        }
+        if (newX < 0) {
+          return newX + singleSetWidth;
         }
         return newX;
       });
@@ -104,19 +108,40 @@ export function SelectedWork({ projects, dict, locale }: { projects: Project[]; 
       if (gestureLockedRef.horizontal) {
         e.preventDefault();
         setTranslateX((prev) => {
-          const newX = prev - deltaX; // Invert direction for natural feel
+          // For RTL, invert the delta to match visual direction
+          const adjustedDelta = isRTL ? deltaX : -deltaX;
+          const newX = prev + adjustedDelta;
           // Handle loop during drag
           if (newX >= singleSetWidth) return newX - singleSetWidth;
           if (newX < 0) return newX + singleSetWidth;
           return newX;
         });
         touchStartRef.x = touch.clientX;
+
+        // Check which project is under the finger and activate preview
+        const elementUnderFinger = document.elementFromPoint(touch.clientX, touch.clientY);
+        const projectCard = elementUnderFinger?.closest('[data-project-card]');
+        if (projectCard) {
+          const projectSlug = projectCard.getAttribute('data-project-card');
+          if (projectSlug && projectSlug !== mobileActivePreview) {
+            setMobileActivePreview(projectSlug);
+          }
+        }
       }
     };
 
     const onTouchEnd = () => {
-      isDraggingRef.current = false;
       gestureLockedRef.horizontal = false;
+      
+      // Clear any existing resume timeout
+      if (resumeTimeoutRef.current) {
+        clearTimeout(resumeTimeoutRef.current);
+      }
+      
+      // Resume auto-scroll after 1 second
+      resumeTimeoutRef.current = window.setTimeout(() => {
+        isDraggingRef.current = false;
+      }, 1000);
     };
 
     container.addEventListener('touchstart', onTouchStart, { passive: false });
@@ -129,8 +154,11 @@ export function SelectedWork({ projects, dict, locale }: { projects: Project[]; 
       container.removeEventListener('touchmove', onTouchMove);
       container.removeEventListener('touchend', onTouchEnd);
       container.removeEventListener('touchcancel', onTouchEnd);
+      if (resumeTimeoutRef.current) {
+        clearTimeout(resumeTimeoutRef.current);
+      }
     };
-  }, [singleSetWidth]);
+  }, [singleSetWidth, isRTL]);
 
   // Desktop drag support
   useEffect(() => {
@@ -150,7 +178,9 @@ export function SelectedWork({ projects, dict, locale }: { projects: Project[]; 
 
       const deltaX = e.clientX - dragStartRef.x;
       setTranslateX(() => {
-        const newX = dragStartRef.translateX + deltaX;
+        // For RTL, invert the delta to match visual direction
+        const adjustedDelta = isRTL ? deltaX : -deltaX;
+        const newX = dragStartRef.translateX + adjustedDelta;
         // Handle loop during drag
         if (newX >= singleSetWidth) return newX - singleSetWidth;
         if (newX < 0) return newX + singleSetWidth;
@@ -177,23 +207,27 @@ export function SelectedWork({ projects, dict, locale }: { projects: Project[]; 
       window.removeEventListener('mouseup', onMouseUp);
       container.removeEventListener('mouseleave', onMouseLeave);
     };
-  }, [singleSetWidth, translateX]);
+  }, [singleSetWidth, translateX, isRTL]);
 
   // Manual scroll with arrows
   const scroll = useCallback(
-    (direction: "left" | "right") => {
+    (arrowDirection: "left" | "right") => {
       const card = trackRef.current?.querySelector('[data-project-card]') as HTMLElement;
       const cardWidth = card?.offsetWidth || 400;
       const scrollAmount = cardWidth + 24;
 
       setTranslateX((prev) => {
-        const newX = direction === "left" ? prev - scrollAmount : prev + scrollAmount;
+        // For RTL, invert the delta since icons are swapped
+        const delta = isRTL 
+          ? (arrowDirection === "left" ? scrollAmount : -scrollAmount)
+          : (arrowDirection === "left" ? -scrollAmount : scrollAmount);
+        const newX = prev + delta;
         if (newX >= singleSetWidth) return newX - singleSetWidth;
         if (newX < 0) return newX + singleSetWidth;
         return newX;
       });
     },
-    [singleSetWidth]
+    [singleSetWidth, isRTL]
   );
 
   // Mobile preview handlers
@@ -298,7 +332,7 @@ export function SelectedWork({ projects, dict, locale }: { projects: Project[]; 
           ref={trackRef}
           className="flex gap-6"
           style={{
-            transform: `translateX(-${translateX}px)`,
+            transform: `translateX(${isRTL ? translateX : -translateX}px)`,
             willChange: 'transform'
           }}
         >
@@ -308,7 +342,7 @@ export function SelectedWork({ projects, dict, locale }: { projects: Project[]; 
           {marqueeProjects.map((project: Project, index: number) => (
             <motion.div
               key={`${project.slug}-${index}`}
-              data-project-card
+              data-project-card={project.slug}
               initial={{ opacity: 0, x: 40 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
