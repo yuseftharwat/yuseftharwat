@@ -26,13 +26,12 @@ function applyTheme(theme: Theme) {
 function getInitialTheme(): Theme {
   const saved = localStorage.getItem("theme");
   if (saved === "light" || saved === "dark") return saved;
-  return window.matchMedia("(prefers-color-scheme: dark)").matches
-    ? "dark"
-    : "light";
+  // Default to dark theme on first load
+  return "dark";
 }
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
-  const [theme, setTheme] = useState<Theme>("light");
+  const [theme, setTheme] = useState<Theme>("dark");
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -53,8 +52,8 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   return (
     <ThemeContext.Provider
       value={{
-        theme: mounted ? theme : "light",
-        isDark: mounted ? theme === "dark" : false,
+        theme: mounted ? theme : "dark",
+        isDark: mounted ? theme === "dark" : true,
         toggleTheme,
       }}
     >

@@ -12,7 +12,6 @@ const SCROLL_SPEED_MOBILE = 0.75; // slightly faster than desktop, but still rea
 const TOUCH_PAUSE_MS = 1000;
 
 export function SelectedWork({ projects, dict, locale }: { projects: Project[]; dict: any; locale?: string }) {
-  const filtered = projects;
   const scrollRef = useRef<HTMLDivElement>(null);
   const rafRef = useRef<number>();
   const autoScrollPausedRef = useRef(false);
@@ -21,6 +20,8 @@ export function SelectedWork({ projects, dict, locale }: { projects: Project[]; 
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(false);
   const isRTL = locale === 'ar';
+
+  const filtered = projects;
 
   const pauseAutoScrollFor = useCallback((ms = TOUCH_PAUSE_MS) => {
     autoScrollPausedRef.current = true;
@@ -136,15 +137,20 @@ export function SelectedWork({ projects, dict, locale }: { projects: Project[]; 
       if (el && !autoScrollPausedRef.current) {
         const maxScroll = el.scrollWidth - el.clientWidth;
 
-        // Check if we've reached the end
-        // In RTL with direction set, scrollLeft can be negative
-        // Use absolute value to check distance from start
-        const distanceFromStart = Math.abs(el.scrollLeft);
-        if (distanceFromStart >= maxScroll - 1) {
-          el.scrollTo({ left: 0, behavior: 'auto' });
+        if (isRTL) {
+          // RTL: scroll from right to left (decrease scrollLeft)
+          if (el.scrollLeft <= -maxScroll + 1) {
+            el.scrollLeft = 0;
+          } else {
+            el.scrollLeft -= scrollSpeedRef.current;
+          }
         } else {
-          // scrollBy respects the element's direction automatically
-          el.scrollBy({ left: scrollSpeedRef.current, behavior: 'auto' });
+          // LTR: scroll from left to right (increase scrollLeft)
+          if (el.scrollLeft >= maxScroll - 1) {
+            el.scrollLeft = 0;
+          } else {
+            el.scrollLeft += scrollSpeedRef.current;
+          }
         }
       }
       rafRef.current = requestAnimationFrame(tick);
@@ -154,7 +160,7 @@ export function SelectedWork({ projects, dict, locale }: { projects: Project[]; 
     return () => {
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
     };
-  }, []);
+  }, [isRTL]);
 
   const scroll = useCallback(
     (direction: "left" | "right") => {
@@ -165,12 +171,17 @@ export function SelectedWork({ projects, dict, locale }: { projects: Project[]; 
       const cardWidth = card?.offsetWidth ?? 400;
       const scrollAmount = cardWidth + 24; // card width + gap (gap-6)
 
-      // In RTL, "left" scrolls left (negative), "right" scrolls right (positive)
-      // In LTR, "left" scrolls left (negative), "right" scrolls right (positive)
-      el.scrollLeft += direction === "left" ? -scrollAmount : scrollAmount;
+      if (isRTL) {
+        // RTL: reverse the direction for correct visual behavior
+        // "left" button should scroll right (positive), "right" button should scroll left (negative)
+        el.scrollLeft += direction === "left" ? scrollAmount : -scrollAmount;
+      } else {
+        // LTR: normal behavior
+        el.scrollLeft += direction === "left" ? -scrollAmount : scrollAmount;
+      }
       checkScroll();
     },
-    [checkScroll]
+    [checkScroll, isRTL]
   );
 
   return (
@@ -192,34 +203,42 @@ export function SelectedWork({ projects, dict, locale }: { projects: Project[]; 
             <button
               type="button"
               onClick={() => scroll("left")}
-              disabled={!canScrollLeft}
               aria-label="Previous projects"
               className={cn(
                 "flex h-12 w-12 items-center justify-center rounded-full border transition-all duration-300",
                 "border-text-primary/20 text-text-primary hover:bg-text-primary hover:text-bg-primary",
-                "dark:border-white/20 dark:text-white dark:hover:bg-white dark:hover:text-black",
-                !canScrollLeft && "opacity-20 cursor-not-allowed hover:bg-transparent hover:text-text-primary dark:hover:bg-transparent dark:hover:text-white"
+                "dark:border-white/20 dark:text-white dark:hover:bg-white dark:hover:text-black"
               )}
             >
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M19 12H5M12 19l-7-7 7-7" />
-              </svg>
+              {isRTL ? (
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M5 12h14M12 5l7 7-7 7" />
+                </svg>
+              ) : (
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M19 12H5M12 19l-7-7 7-7" />
+                </svg>
+              )}
             </button>
             <button
               type="button"
               onClick={() => scroll("right")}
-              disabled={!canScrollRight}
               aria-label="Next projects"
               className={cn(
                 "flex h-12 w-12 items-center justify-center rounded-full border transition-all duration-300 active:scale-90",
                 "border-text-primary/20 text-text-primary hover:bg-text-primary hover:text-bg-primary",
-                "dark:border-white/20 dark:text-white dark:hover:bg-white dark:hover:text-black",
-                !canScrollRight && "opacity-20 cursor-not-allowed hover:bg-transparent hover:text-text-primary dark:hover:bg-transparent dark:hover:text-white"
+                "dark:border-white/20 dark:text-white dark:hover:bg-white dark:hover:text-black"
               )}
             >
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M5 12h14M12 5l7 7-7 7" />
-              </svg>
+              {isRTL ? (
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M19 12H5M12 19l-7-7 7-7" />
+                </svg>
+              ) : (
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M5 12h14M12 5l7 7-7 7" />
+                </svg>
+              )}
             </button>
           </div>
         </div>
@@ -229,7 +248,7 @@ export function SelectedWork({ projects, dict, locale }: { projects: Project[]; 
       <div
         ref={scrollRef}
         className="relative z-10 flex gap-6 overflow-x-auto px-6 md:px-10 pb-4 no-scrollbar touch-pan-x"
-        style={{ scrollbarWidth: "none", msOverflowStyle: "none", direction: isRTL ? 'rtl' : 'ltr' }}
+        style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
       >
         {/* Left spacer to align with max-w-site */}
         <div className="hidden lg:block shrink-0" style={{ width: "max(0px, calc((100vw - 1400px) / 2))" }} />
