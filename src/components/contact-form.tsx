@@ -366,7 +366,7 @@ export function ContactForm({ dict }: { dict: any }) {
         <Button type="submit">{isSubmitting ? dict.sending : dict.submit}</Button>
         {status === "success" && (
           <div className="flex-1 bg-success/10 border border-success/30 rounded-lg p-4">
-            <p className="text-small text-success font-medium">Good call you are in good hands I will reply as soon as possible</p>
+            <p className="text-small text-success font-medium">Good call you are in good hands Wewill reply as soon as possible</p>
           </div>
         )}
         {status === "error" && (
