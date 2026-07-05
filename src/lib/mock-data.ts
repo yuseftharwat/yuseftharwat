@@ -14,7 +14,7 @@ const PROJECTS: Project[] = [
     challenge:
       "The challenge was to recreate the speakers with a high level of realism while accurately capturing their distinctive materials, elegant form, and luxury aesthetic. Every render needed to reflect the premium quality associated with the Bang & Olufsen brand.",
     solution:
-      "I developed realistic materials, carefully crafted studio lighting, and clean compositions to emphasize the speakers' aluminum finishes, fabric textures, and minimalist design. The visuals were designed to resemble high-end commercial advertising while keeping the focus on the product.",
+      "We developed realistic materials, carefully crafted studio lighting, and clean compositions to emphasize the speakers' aluminum finishes, fabric textures, and minimalist design. The visuals were designed to resemble high-end commercial advertising while keeping the focus on the product.",
     process:
       "Gathered reference images and studied the speakers' design and materials. Modeled and refined the products with close attention to detail. Created photorealistic materials and a premium studio lighting setup. Composed cinematic camera angles to showcase the products from multiple perspectives. Rendered the final images and completed post-processing to achieve a polished, commercial-quality presentation.",
     year: 2026,
@@ -45,7 +45,7 @@ const PROJECTS: Project[] = [
     challenge:
       "The challenge was to make viewers feel the comfort of the pillow through visuals alone. Since softness is a physical sensation, the animation needed to communicate plushness, support, and relaxation without relying on words.",
     solution:
-      "I created a high-end 3D product animation that used soft lighting, realistic fabric simulation, detailed material creation, and smooth, floating camera movements to reinforce the pillow's luxurious comfort. Every visual element was designed to evoke the sensation of softness and relaxation while maintaining a clean, premium aesthetic.",
+      "We created a high-end 3D product animation that used soft lighting, realistic fabric simulation, detailed material creation, and smooth, floating camera movements to reinforce the pillow's luxurious comfort. Every visual element was designed to evoke the sensation of softness and relaxation while maintaining a clean, premium aesthetic.",
     process:
       "Researched the brand and defined the creative direction. Built the product scene and refined the pillow model. Created realistic fabric materials and soft lighting. Animated the pillow with subtle motion to emphasize comfort and weightlessness. Added cinematic camera movements, rendered the final sequence, and completed compositing and color grading for a polished commercial finish.",
     year: 2026,
@@ -77,9 +77,9 @@ const PROJECTS: Project[] = [
     challenge:
       "The challenge was to showcase a highly tactile product in a way that conveyed both its premium quality and the emotional connection behind each custom-made rug, while making the visuals feel elegant and memorable.",
     solution:
-      "I created a cinematic 3D product animation that emphasized the rug's texture, carving details, and personalized artwork through carefully crafted lighting, realistic materials, and smooth camera movements to reinforce the brand's premium identity.",
+      "We created a cinematic 3D product animation that emphasized the rug's texture, carving details, and personalized artwork through carefully crafted lighting, realistic materials, and smooth camera movements to reinforce the brand's premium identity.",
     process:
-      "I began by studying the product and defining the visual direction, then modeled and refined the scene, developed realistic materials and lighting, animated the product and camera, and finished with rendering, compositing, and color grading to deliver a polished final film.",
+      "We began by studying the product and defining the visual direction, then modeled and refined the scene, developed realistic materials and lighting, animated the product and camera, and finished with rendering, compositing, and color grading to deliver a polished final film.",
     year: 2026,
     duration: "Pending...",
     software: ["Cinema 4D", "Redshift", "After Effects"],
@@ -109,7 +109,7 @@ const PROJECTS: Project[] = [
     challenge:
       "The main challenge was to present the furniture in a way that highlighted the richness of the wood and leather materials while communicating a premium, luxury-brand aesthetic suitable for the UK market.",
     solution:
-      "I created a cinematic 3D product showcase using realistic material creation, detailed lighting, and smooth camera animations. The video focused on emphasizing the natural wood textures, leather finishes, and refined product details to elevate the brand's visual identity.",
+      "We created a cinematic 3D product showcase using realistic material creation, detailed lighting, and smooth camera animations. The video focused on emphasizing the natural wood textures, leather finishes, and refined product details to elevate the brand's visual identity.",
     process:
       "Studied the brand and defined the visual direction. Built and refined the 3D scene and furniture assets. Created realistic wood and leather materials. Designed cinematic lighting and camera movement. Animated the product showcase. Rendered, composited, and color graded the final video for a polished premium look.",
     year: 2026,
@@ -141,7 +141,7 @@ const PROJECTS: Project[] = [
     challenge:
       "The challenge was to recreate the Adidas Samba with a high level of realism while accurately representing its distinctive materials, proportions, and fine details. Every render needed to feel premium enough to match the visual standards of professional footwear advertising.",
     solution:
-      "I focused on realistic material creation, precise lighting, and carefully composed camera angles to emphasize the leather, suede, and rubber textures. The renders were designed to highlight the product's iconic silhouette while delivering a polished, luxury-inspired aesthetic.",
+      "We focused on realistic material creation, precise lighting, and carefully composed camera angles to emphasize the leather, suede, and rubber textures. The renders were designed to highlight the product's iconic silhouette while delivering a polished, luxury-inspired aesthetic.",
     process:
       "Gathered reference images and studied the shoe's materials and construction. Modeled and refined the Adidas Samba with close attention to detail. Created realistic shaders for leather, suede, and rubber components. Designed studio lighting and camera compositions to enhance the product's form. Rendered the final images and completed post-processing to achieve a clean, commercial-quality finish.",
     year: 2026,
@@ -179,7 +179,7 @@ const PROJECTS: Project[] = [
     challenge:
       "The challenge was to transform an everyday product into a visually engaging commercial while accurately showcasing its premium materials, elegant design, and fine details. The animation needed to communicate quality and sophistication through realistic visuals.",
     solution:
-      "I created the animation using Blender Cycles for photorealistic rendering and Adobe After Effects for compositing and post-production. Realistic materials, studio lighting, fluid camera movements, and close-up product shots were used to highlight the faucet's finish, form, and craftsmanship.",
+      "We created the animation using Blender Cycles for photorealistic rendering and Adobe After Effects for compositing and post-production. Realistic materials, studio lighting, fluid camera movements, and close-up product shots were used to highlight the faucet's finish, form, and craftsmanship.",
     process:
       "Studied the product and established the creative direction. Modeled and refined the faucet with attention to accurate proportions and fine details. Created realistic metal materials and studio lighting in Blender Cycles. Animated cinematic camera movements to showcase the product from multiple angles. Rendered the final sequences and completed compositing, color grading, and finishing touches in Adobe After Effects to deliver a polished commercial-quality animation.",
     year: 2026,
@@ -208,7 +208,7 @@ const PROJECTS: Project[] = [
     categories: ["Product"],
     description: "This personal 3D product visualization was created to showcase a Nike sneaker through a series of cinematic, photorealistic renders. The project focused on capturing the shoe's dynamic design, premium materials, and performance-inspired aesthetic with a commercial-quality presentation.",
     challenge: "The challenge was to recreate the sneaker with a high level of realism while accurately representing its materials, stitching, and intricate design details. The renders needed to communicate both the product's athletic performance and premium visual appeal.",
-    solution: "I developed realistic materials, detailed lighting, and carefully composed camera angles to highlight the shoe's textures, silhouette, and craftsmanship. The result was a collection of high-end product renders inspired by modern footwear advertising.",
+    solution: "We developed realistic materials, detailed lighting, and carefully composed camera angles to highlight the shoe's textures, silhouette, and craftsmanship. The result was a collection of high-end product renders inspired by modern footwear advertising.",
     process: "Collected reference images and analyzed the shoe's design and construction. Modeled and refined the sneaker with close attention to proportions and fine details. Created photorealistic materials for the fabric, leather, rubber, and other components. Designed premium studio lighting and cinematic compositions to emphasize the product's form. Rendered the final images and completed post-processing to achieve a polished, commercial-quality result.",
     year: 2026,
     duration: "Pending...",
@@ -245,7 +245,7 @@ const PROJECTS: Project[] = [
     challenge:
       "The challenge was to seamlessly integrate multiple products into a single cinematic environment while ensuring each appliance received individual attention. The animation needed to highlight both the functionality of the products and how they complemented a high-end contemporary interior.",
     solution:
-      "I created a photorealistic apartment environment and used cinematic lighting, realistic materials, and smooth camera movements to naturally showcase the oven, coffee machine, and microwave. The lifestyle-focused presentation helped reinforce Manilotti's premium brand identity while demonstrating how the products fit into an elegant modern kitchen.",
+      "We created a photorealistic apartment environment and used cinematic lighting, realistic materials, and smooth camera movements to naturally showcase the oven, coffee machine, and microwave. The lifestyle-focused presentation helped reinforce Manilotti's premium brand identity while demonstrating how the products fit into an elegant modern kitchen.",
     process:
       "Planned the visual concept and designed the luxury apartment environment. Modeled and refined the kitchen scene and integrated the three Manilotti appliances. Created realistic materials, lighting, and interior details to achieve a premium atmosphere. Animated cinematic camera movements that showcased each product individually and as part of the complete kitchen. Rendered the animation, completed compositing and color grading, and delivered a polished commercial-quality product showcase.",
     year: 2026,
@@ -278,7 +278,7 @@ const PROJECTS: Project[] = [
     challenge:
       "The challenge was to present the stand cooker as both a high-performance appliance and a premium lifestyle product. The animation needed to emphasize its Italian-inspired design, quality materials, and functional details while maintaining a clean, sophisticated commercial look.",
     solution:
-      "I created a high-end 3D product animation using realistic materials, studio-quality lighting, and dynamic camera movements to highlight the cooker's design and features. Carefully composed close-up shots showcased the stainless-steel finish, control panel, and overall build quality, reinforcing Manilotti's premium brand identity.",
+      "We created a high-end 3D product animation using realistic materials, studio-quality lighting, and dynamic camera movements to highlight the cooker's design and features. Carefully composed close-up shots showcased the stainless-steel finish, control panel, and overall build quality, reinforcing Manilotti's premium brand identity.",
     process:
       "Studied the product and established the visual direction. Modeled and refined the stand cooker with accurate proportions and fine details. Developed realistic materials and a premium studio environment. Designed cinematic lighting and camera animations to emphasize the product's craftsmanship and functionality. Rendered the final animation, completed compositing and color grading, and delivered a polished commercial-ready product showcase.",
     year: 2026,
@@ -305,10 +305,10 @@ const PROJECTS: Project[] = [
     client: "Personal Project",
     industry: "Automotive",
     categories: ["Product", "Motion Design"],
-    description: "This personal project was my exploration into automotive animation, an area outside my usual specialization in product visualization. I created a cinematic commercial featuring the Audi RS5 to challenge myself, expand my skill set, and experiment with storytelling in the automotive industry.",
-    challenge: "As automotive visualization is not my primary field, the challenge was to learn the unique workflows involved in creating dynamic car commercials while achieving the level of realism and cinematic quality expected from automotive advertising.",
-    solution: "I applied the same attention to detail I use in product visualization, focusing on realistic materials, cinematic lighting, dynamic camera movements, and polished rendering. The result was a commercial-style animation that captured the Audi RS5's aggressive design and performance-oriented character while allowing me to explore a new creative discipline.",
-    process: "Researched automotive commercial references and established the visual direction. Built and refined the scene, ensuring the vehicle and environment complemented each other. Developed realistic paint, glass, metal, and tire materials to achieve a premium look. Animated cinematic camera movements to showcase the car's design, proportions, and performance. Rendered the final animation, completed compositing and color grading, and polished the commercial to demonstrate my ability to adapt my 3D skills beyond my core specialization.",
+    description: "This personal project was our exploration into automotive animation, an area outside our usual specialization in product visualization. We created a cinematic commercial featuring the Audi RS5 to challenge ourselves, expand our skill set, and experiment with storytelling in the automotive industry.",
+    challenge: "As automotive visualization is not our primary field, the challenge was to learn the unique workflows involved in creating dynamic car commercials while achieving the level of realism and cinematic quality expected from automotive advertising.",
+    solution: "We applied the same attention to detail we use in product visualization, focusing on realistic materials, cinematic lighting, dynamic camera movements, and polished rendering. The result was a commercial-style animation that captured the Audi RS5's aggressive design and performance-oriented character while allowing us to explore a new creative discipline.",
+    process: "Researched automotive commercial references and established the visual direction. Built and refined the scene, ensuring the vehicle and environment complemented each other. Developed realistic paint, glass, metal, and tire materials to achieve a premium look. Animated cinematic camera movements to showcase the car's design, proportions, and performance. Rendered the final animation, completed compositing and color grading, and polished the commercial to demonstrate our ability to adapt our 3D skills beyond our core specialization.",
     year: 2026,
     duration: "Pending...",
     software: ["Blender", "After Effects"],
@@ -335,7 +335,7 @@ const PROJECTS: Project[] = [
     categories: ["Product", "VFX"],
     description: "This VFX project reimagines an ancient Egyptian cat statue mysteriously coming to life inside the Vélez-Blanco Castle Museum. Using seamless visual effects and cinematic storytelling, the animation transforms a modern museum setting into a supernatural encounter inspired by ancient Egyptian mythology.",
     challenge: "The challenge was to create a believable transformation that blended CGI with live-action footage. The VFX needed to feel natural within the museum environment while making the ancient Egyptian cat appear as though it truly belonged in the scene.",
-    solution: "I combined 3D animation, camera tracking, realistic lighting, and compositing to morph a regular cat into an ancient Egyptian-inspired statue. Careful attention was given to matching the lighting, perspective, and movement of the live-action footage, resulting in a seamless integration between the CGI and the real environment.",
+    solution: "We combined 3D animation, camera tracking, realistic lighting, and compositing to morph a regular cat into an ancient Egyptian-inspired statue. Careful attention was given to matching the lighting, perspective, and movement of the live-action footage, resulting in a seamless integration between the CGI and the real environment.",
     process: "Planned the transformation sequence and gathered visual references for ancient Egyptian cat statues. Tracked the live-action footage and prepared the scene for CGI integration. Modeled, textured, and animated the Egyptian cat transformation. Matched the lighting and camera movement to ensure realistic interaction with the museum environment. Composited the CGI with the live-action footage, added visual effects and color grading, and finalized the cinematic sequence for a convincing VFX result.",
     year: 2026,
     duration: "Pending...",
@@ -366,7 +366,7 @@ const PROJECTS: Project[] = [
     challenge:
       "The challenge was to create smooth, believable transitions between multiple interior environments while keeping the Amazon box as the central visual element. Each transformation needed to feel seamless, engaging, and clearly communicate the variety of furniture available.",
     solution:
-      "I developed a cinematic animation where the Amazon box acts as the visual bridge between different rooms, unfolding into new living spaces with each transition. Through dynamic camera work, realistic lighting, and carefully designed environments, the animation emphasized the breadth of Amazon's furniture offerings in a memorable and visually engaging way.",
+      "We developed a cinematic animation where the Amazon box acts as the visual bridge between different rooms, unfolding into new living spaces with each transition. Through dynamic camera work, realistic lighting, and carefully designed environments, the animation emphasized the breadth of Amazon's furniture offerings in a memorable and visually engaging way.",
     process:
       "Developed the concept and planned the transformation sequence between rooms. Designed and built multiple interior environments featuring different furniture styles. Animated the Amazon box to roll, unfold, and transition naturally between each space. Created realistic materials, lighting, and camera movements to maintain visual continuity. Rendered the final animation and completed compositing and color grading to achieve a polished commercial-quality concept film.",
     year: 2026,
@@ -398,7 +398,7 @@ const PROJECTS: Project[] = [
     challenge:
       "The challenge was to create a natural and convincing cloth simulation that interacted realistically with the vehicle while maintaining a smooth, cinematic reveal. The movement of the fabric needed to feel believable and enhance the anticipation of the final reveal.",
     solution:
-      "Using advanced cloth simulation techniques, I animated a fabric cover that naturally draped over and revealed the Porsche 911. Realistic lighting, premium materials, and carefully choreographed camera movements worked together to create an elegant, commercial-style sequence focused on both the vehicle and the simulation itself.",
+      "Using advanced cloth simulation techniques, we animated a fabric cover that naturally draped over and revealed the Porsche 911. Realistic lighting, premium materials, and carefully choreographed camera movements worked together to create an elegant, commercial-style sequence focused on both the vehicle and the simulation itself.",
     process:
       "Planned the reveal sequence and established the cinematic direction. Prepared the Porsche 911 model and scene for cloth interaction. Simulated and refined the fabric to achieve realistic folds, movement, and collisions. Designed studio lighting and cinematic camera movements to enhance the reveal. Rendered the final animation and completed compositing and color grading to produce a polished showcase of both the automotive visualization and cloth simulation techniques.",
     year: 2026,
@@ -431,7 +431,7 @@ const PROJECTS: Project[] = [
     challenge:
       "The challenge was to seamlessly integrate a massive CGI coffee machine into a real-world environment while making the interaction with the truck and oversized coffee cup feel believable. The visual effects needed to maintain realistic scale, lighting, and perspective despite the exaggerated concept.",
     solution:
-      "I combined 3D animation, camera tracking, realistic compositing, and cinematic VFX techniques to bring the concept to life. Careful attention was given to matching the live-action footage, creating convincing coffee simulations, and ensuring the giant machine naturally interacted with the environment to produce a fun, eye-catching commercial.",
+      "We combined 3D animation, camera tracking, realistic compositing, and cinematic VFX techniques to bring the concept to life. Careful attention was given to matching the live-action footage, creating convincing coffee simulations, and ensuring the giant machine naturally interacted with the environment to produce a fun, eye-catching commercial.",
     process:
       "Planned the creative concept and storyboard for the commercial. Tracked the live-action footage to accurately integrate the CGI elements. Modeled, textured, and animated the giant coffee machine and oversized coffee cup. Simulated the flowing coffee and synchronized the animation with the moving truck. Composited the CGI with the live-action footage, matched lighting and color, and completed the final commercial with cinematic finishing touches.",
     year: 2026,
@@ -458,7 +458,7 @@ const TESTIMONIALS: Testimonial[] = [
   {
     clientName: "Elena Kovacs",
     company: "Arinture",
-    country: "Germany",
+    country: "UK",
     review:
       "Yusef delivered imagery indistinguishable from a physical shoot, weeks before a single unit was manufactured. Our launch shipped on time because of it.",
   },
@@ -482,7 +482,7 @@ const TESTIMONIALS_AR: Testimonial[] = [
   {
     clientName: "إيلينا كوفاكس",
     company: "Arinture",
-    country: "ألمانيا",
+    country: "UK",
     review:
       "يوسف قدملنا صور صعب تفرقها عن التصوير الحقيقي، وقبل أسابيع من تصنيع أي قطعة. إطلاق منتجنا تم في ميعاده بسببه.",
   },
@@ -512,7 +512,7 @@ const SERVICES: Service[] = [
 ];
 
 const SERVICES_AR: Service[] = [
-  { title: "تصوير منتج 3D", description: "صور واقعية مبنية من ملفات CAD أو مراجع، جاهزة للحملات والمطبوعات." },
+  { title: "تخيل منتج 3D", description: "صور واقعية مبنية من ملفات CAD أو مراجع، جاهزة للحملات والمطبوعات." },
   { title: "أنيميشن منتج", description: "أفلام سينمائية للمنتجات بتبرز شكلها ووظيفتها وخاماتها بصورة متعوب عليها." },
   { title: "موشن ديزاين", description: "حركة وتايبوجرافي للبراندات والحملات الإعلانية ومواقع التواصل." },
   { title: "إعلانات CGI", description: "حملات CGI متكاملة ممكن تغني عن التصوير التقليدي أو تكمله." },
@@ -593,7 +593,7 @@ const PROJECTS_AR_OVERRIDES: Record<string, Partial<Project>> = {
     process: "درست البراند، جهزت الأصول والمشهد. صممت خامات الخشب والجلد. حطيت الإضاءة وحركت الكاميرا. ريندر، كومبوزيتنج، وتظبيط ألوان للفيديو النهائي.",
   },
   "memorug": {
-    title: "ميموراج",
+    title: "ميموراج - انميشن ثري دي",
     description: "ميموراج براند سجاد حائط كاستم بيحول الصور الشخصية لقطع فنية منسوجة. المشروع ركز على عمل أنيميشن فاخر للمنتج يبرز الشغل اليدوي والقيمة المعنوية وراه.",
     challenge: "التحدي كان عرض منتج ملموس زي السجاد بطريقة تحسسك بجودته وتوصل المشاعر اللي ورا كل سجادة بتتعمل مخصوص.",
     solution: "عملت فيديو 3D ركز على نسيج السجادة، التفاصيل المحفورة، والصورة المخصصة من خلال إضاءة متوظفة صح وحركات كاميرا سلسة.",

@@ -22,7 +22,7 @@ export default async function HomePage() {
     <>
       <ScrollRestorer />
       <Hero dict={dict.hero} />
-      <SelectedWork projects={projects} dict={dict.selectedWork} />
+      <SelectedWork projects={projects} dict={dict.selectedWork} locale={locale} />
       <Services services={services} dict={dict.services} />
       <About dict={dict.about} />
       <Testimonials testimonials={testimonials} dict={dict.testimonials} />

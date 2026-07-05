@@ -11,7 +11,7 @@ const SCROLL_SPEED_DESKTOP = 0.5; // pixels per frame (~30px/sec at 60fps)
 const SCROLL_SPEED_MOBILE = 0.75; // slightly faster than desktop, but still readable on phone
 const TOUCH_PAUSE_MS = 1000;
 
-export function SelectedWork({ projects, dict }: { projects: Project[]; dict: any }) {
+export function SelectedWork({ projects, dict, locale }: { projects: Project[]; dict: any; locale?: string }) {
   const filtered = projects;
   const scrollRef = useRef<HTMLDivElement>(null);
   const rafRef = useRef<number>();
@@ -20,6 +20,7 @@ export function SelectedWork({ projects, dict }: { projects: Project[]; dict: an
   const touchPauseTimerRef = useRef<ReturnType<typeof setTimeout>>();
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(false);
+  const isRTL = locale === 'ar';
 
   const pauseAutoScrollFor = useCallback((ms = TOUCH_PAUSE_MS) => {
     autoScrollPausedRef.current = true;
@@ -134,10 +135,16 @@ export function SelectedWork({ projects, dict }: { projects: Project[]; dict: an
       const el = scrollRef.current;
       if (el && !autoScrollPausedRef.current) {
         const maxScroll = el.scrollWidth - el.clientWidth;
-        if (el.scrollLeft >= maxScroll - 1) {
-          el.scrollLeft = 0;
+
+        // Check if we've reached the end
+        // In RTL with direction set, scrollLeft can be negative
+        // Use absolute value to check distance from start
+        const distanceFromStart = Math.abs(el.scrollLeft);
+        if (distanceFromStart >= maxScroll - 1) {
+          el.scrollTo({ left: 0, behavior: 'auto' });
         } else {
-          el.scrollLeft += scrollSpeedRef.current;
+          // scrollBy respects the element's direction automatically
+          el.scrollBy({ left: scrollSpeedRef.current, behavior: 'auto' });
         }
       }
       rafRef.current = requestAnimationFrame(tick);
@@ -158,6 +165,8 @@ export function SelectedWork({ projects, dict }: { projects: Project[]; dict: an
       const cardWidth = card?.offsetWidth ?? 400;
       const scrollAmount = cardWidth + 24; // card width + gap (gap-6)
 
+      // In RTL, "left" scrolls left (negative), "right" scrolls right (positive)
+      // In LTR, "left" scrolls left (negative), "right" scrolls right (positive)
       el.scrollLeft += direction === "left" ? -scrollAmount : scrollAmount;
       checkScroll();
     },
@@ -220,7 +229,7 @@ export function SelectedWork({ projects, dict }: { projects: Project[]; dict: an
       <div
         ref={scrollRef}
         className="relative z-10 flex gap-6 overflow-x-auto px-6 md:px-10 pb-4 no-scrollbar touch-pan-x"
-        style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+        style={{ scrollbarWidth: "none", msOverflowStyle: "none", direction: isRTL ? 'rtl' : 'ltr' }}
       >
         {/* Left spacer to align with max-w-site */}
         <div className="hidden lg:block shrink-0" style={{ width: "max(0px, calc((100vw - 1400px) / 2))" }} />
