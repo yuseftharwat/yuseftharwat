@@ -22,7 +22,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Invalid submission" }, { status: 400 });
   }
 
-  const { name, email, company, projectType, budget, What do you need?, countryCode, phoneNumber, honeypot } = parsed.data;
+  const { name, email, company, projectType, budget, message, countryCode, phoneNumber, honeypot } = parsed.data;
 
   // Spam protection: honeypot check
   if (honeypot) {
