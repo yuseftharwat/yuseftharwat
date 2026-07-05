@@ -6,33 +6,80 @@ import Link from "next/link";
 import type { Project } from "@/lib/types";
 import { cn } from "@/lib/utils";
 
-export function ProjectCard({ 
-  project, 
+const TOUCH_MOVE_THRESHOLD = 12;
+
+export function ProjectCard({
+  project,
   priority = false,
   openProjectLabel = "Open Project",
-  index = 0
-}: { 
-  project: Project; 
+  index = 0,
+  onAutoScrollPause,
+  onAutoScrollResume,
+}: {
+  project: Project;
   priority?: boolean;
   openProjectLabel?: string;
   index?: number;
+  onAutoScrollPause?: () => void;
+  onAutoScrollResume?: () => void;
 }) {
-  const [hovered, setHovered] = useState(false);
+  const [previewActive, setPreviewActive] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
+  const touchStartRef = useRef<{ x: number; y: number } | null>(null);
+  const didScrollRef = useRef(false);
 
-  const onEnter = () => {
-    setHovered(true);
+  const activatePreview = () => {
+    setPreviewActive(true);
     if (videoRef.current) {
-      if (project.hoverStartTime !== undefined && videoRef.current.currentTime < project.hoverStartTime) {
+      if (
+        project.hoverStartTime !== undefined &&
+        videoRef.current.currentTime < project.hoverStartTime
+      ) {
         videoRef.current.currentTime = project.hoverStartTime;
       }
       videoRef.current.play().catch(() => {});
     }
   };
 
-  const onLeave = () => {
-    setHovered(false);
+  const deactivatePreview = () => {
+    setPreviewActive(false);
     videoRef.current?.pause();
+  };
+
+  const onEnter = () => {
+    activatePreview();
+  };
+
+  const onLeave = () => {
+    deactivatePreview();
+  };
+
+  const onTouchStart = (event: React.TouchEvent<HTMLAnchorElement>) => {
+    onAutoScrollPause?.();
+    const touch = event.touches[0];
+    touchStartRef.current = { x: touch.clientX, y: touch.clientY };
+    didScrollRef.current = false;
+    activatePreview();
+  };
+
+  const onTouchMove = (event: React.TouchEvent<HTMLAnchorElement>) => {
+    const start = touchStartRef.current;
+    if (!start) return;
+
+    const touch = event.touches[0];
+    const movedX = Math.abs(touch.clientX - start.x);
+    const movedY = Math.abs(touch.clientY - start.y);
+
+    if (movedX > TOUCH_MOVE_THRESHOLD || movedY > TOUCH_MOVE_THRESHOLD) {
+      didScrollRef.current = true;
+      deactivatePreview();
+    }
+  };
+
+  const onTouchEnd = () => {
+    touchStartRef.current = null;
+    deactivatePreview();
+    onAutoScrollResume?.();
   };
 
   return (
@@ -40,15 +87,30 @@ export function ProjectCard({
       href={`/work/${project.slug}`}
       onMouseEnter={onEnter}
       onMouseLeave={onLeave}
-      onClick={() => sessionStorage.setItem("scrollY", String(window.scrollY))}
+      onTouchStart={onTouchStart}
+      onTouchMove={onTouchMove}
+      onTouchEnd={onTouchEnd}
+      onTouchCancel={onTouchEnd}
+      onClick={(event) => {
+        if (didScrollRef.current) {
+          event.preventDefault();
+          didScrollRef.current = false;
+          return;
+        }
+        sessionStorage.setItem("scrollY", String(window.scrollY));
+      }}
       className="group block"
     >
       <div className="relative aspect-[4/3] w-full overflow-hidden bg-bg-secondary">
         {project.thumbnailScale ? (
           <div className="absolute inset-0 flex items-center justify-center">
             <div
-              className="relative h-full w-full transition-transform duration-700 ease-elegant group-hover:scale-[1.05]"
-              style={{ transform: `scale(${project.thumbnailScale})` }}
+              className="relative h-full w-full transition-transform duration-700 ease-elegant"
+              style={{
+                transform: previewActive
+                  ? `scale(${Number(project.thumbnailScale) * 1.05})`
+                  : `scale(${project.thumbnailScale})`,
+              }}
             >
               <Image
                 src={project.thumbnail}
@@ -67,7 +129,10 @@ export function ProjectCard({
             alt={`${project.title} — ${project.industry}`}
             fill
             sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
-            className="object-cover transition-transform duration-700 ease-elegant group-hover:scale-[1.05]"
+            className={cn(
+              "object-cover transition-transform duration-700 ease-elegant",
+              previewActive && "scale-[1.05]"
+            )}
             style={{ objectPosition: project.thumbnailObjectPosition ?? "center" }}
             priority={priority}
           />
@@ -83,22 +148,23 @@ export function ProjectCard({
             preload="none"
             className="absolute inset-0 h-full w-full object-cover opacity-0 transition-all duration-700 ease-elegant"
             style={{
-              opacity: hovered ? 1 : 0,
-              transform: hovered ? `scale(${project.videoHoverScale || 1.05})` : "scale(1)",
+              opacity: previewActive ? 1 : 0,
+              transform: previewActive ? `scale(${project.videoHoverScale || 1.05})` : "scale(1)",
             }}
           />
         )}
 
-        {/* Hover overlay */}
-        <div className={cn(
-          "absolute inset-0 bg-black/40 transition-opacity duration-300",
-          hovered ? "opacity-100" : "opacity-0"
-        )} />
+        <div
+          className={cn(
+            "absolute inset-0 bg-black/40 transition-opacity duration-300",
+            previewActive ? "opacity-100" : "opacity-0"
+          )}
+        />
 
         <span
           className={cn(
             "absolute bottom-4 left-4 text-[10px] font-semibold uppercase tracking-[0.15em] text-white transition-all duration-300",
-            hovered ? "translate-y-0 opacity-100" : "translate-y-2 opacity-0"
+            previewActive ? "translate-y-0 opacity-100" : "translate-y-2 opacity-0"
           )}
         >
           {openProjectLabel} →
@@ -106,7 +172,12 @@ export function ProjectCard({
       </div>
 
       <div className="mt-4">
-        <h3 className="font-heading text-xl font-bold text-white group-hover:text-[#C69C6D] transition-colors duration-300">
+        <h3
+          className={cn(
+            "font-heading text-xl font-bold text-white transition-colors duration-300",
+            previewActive && "text-accent"
+          )}
+        >
           {project.title}
         </h3>
         <p className="mt-1 text-[11px] uppercase tracking-[0.15em] text-white/40">
@@ -116,4 +187,3 @@ export function ProjectCard({
     </Link>
   );
 }
-

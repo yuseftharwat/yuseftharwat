@@ -10,11 +10,11 @@ export function Hero({ dict }: { dict: any }) {
     <section className="relative flex min-h-screen items-center overflow-hidden pt-24 pb-12">
       {/* Background Image & Gradient Overlay */}
       <div 
-        className="absolute inset-0 z-0 bg-[url('/hero-bg.png')] bg-cover bg-center bg-no-repeat"
+        className="absolute inset-0 z-0 bg-[url('/hero-bg.png')] bg-cover bg-center bg-no-repeat opacity-30 dark:opacity-100 transition-opacity duration-500"
         aria-hidden="true"
       />
       <div 
-        className="absolute inset-0 z-0 bg-gradient-to-r from-black/60 via-black/20 to-transparent"
+        className="absolute inset-0 z-0 bg-gradient-to-r from-bg-primary/95 via-bg-primary/75 to-bg-primary/40 dark:from-black/60 dark:via-black/20 dark:to-transparent transition-colors duration-500"
         aria-hidden="true"
       />
 
@@ -27,17 +27,17 @@ export function Hero({ dict }: { dict: any }) {
           className="flex max-w-3xl flex-col items-start text-left"
         >
           {/* Eyebrow */}
-          <span className="mb-4 text-sm md:text-base font-semibold tracking-[0.15em] text-[#C69C6D] uppercase">
+          <span className="mb-4 text-sm md:text-base font-semibold tracking-[0.15em] text-accent uppercase">
             {dict.eyebrow}
           </span>
           
           {/* Title */}
-          <h1 className="font-sans text-[2.5rem] leading-[1.05] md:text-[4rem] font-bold tracking-tight text-white text-balance uppercase">
-            {dict.titlePart1}<span className="text-white">{dict.titleHighlight}</span>{dict.titlePart2}
+          <h1 className="font-sans text-[2.5rem] leading-[1.05] md:text-[4rem] font-bold tracking-tight text-text-primary dark:text-white text-balance uppercase transition-colors duration-500">
+            {dict.titlePart1}<span className="text-text-primary dark:text-white">{dict.titleHighlight}</span>{dict.titlePart2}
           </h1>
           
           {/* Description */}
-          <p className="mt-6 max-w-xl text-base md:text-lg text-white/80 leading-relaxed text-balance font-light">
+          <p className="mt-6 max-w-xl text-base md:text-lg text-text-secondary dark:text-white/80 leading-relaxed text-balance font-light transition-colors duration-500">
             {dict.description}
           </p>
           
@@ -46,14 +46,14 @@ export function Hero({ dict }: { dict: any }) {
             <Button 
               href="/#work" 
               size="lg" 
-              className="rounded-full px-8 bg-white text-black hover:bg-gray-200 border-none font-semibold uppercase tracking-wider text-sm"
+              className="rounded-full px-8 bg-text-primary text-bg-primary hover:bg-accent border-none font-semibold uppercase tracking-wider text-sm dark:bg-white dark:text-black dark:hover:bg-accent"
             >
               {dict.viewWork} ↗
             </Button>
             <Button 
               href="/#contact" 
               size="lg" 
-              className="rounded-full px-8 bg-transparent text-white border border-white/40 hover:bg-white/10 uppercase tracking-wider text-sm"
+              className="rounded-full px-8 bg-transparent text-text-primary border border-text-primary/30 hover:bg-text-primary/5 uppercase tracking-wider text-sm dark:text-white dark:border-white/40 dark:hover:bg-white/10"
             >
               {dict.bookProject}
             </Button>
@@ -68,10 +68,10 @@ export function Hero({ dict }: { dict: any }) {
         animate={{ opacity: 1 }}
         transition={{ delay: 1, duration: 1 }}
       >
-        <span className="text-[10px] font-semibold uppercase tracking-[0.2em] text-white/70">
+        <span className="text-[10px] font-semibold uppercase tracking-[0.2em] text-text-secondary dark:text-white/70 transition-colors duration-500">
           Scroll
         </span>
-        <div className="h-12 w-[1px] bg-white/30" />
+        <div className="h-12 w-[1px] bg-text-primary/30 dark:bg-white/30 transition-colors duration-500" />
       </motion.div>
     </section>
   );

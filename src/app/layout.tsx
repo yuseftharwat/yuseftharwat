@@ -3,6 +3,7 @@ import { Inter, Cormorant_Garamond } from "next/font/google";
 import "./globals.css";
 import { Nav } from "@/components/nav";
 import { Footer } from "@/components/footer";
+import { ThemeProvider } from "@/components/theme-provider";
 
 const body = Inter({
   subsets: ["latin"],
@@ -75,12 +76,25 @@ export default function RootLayout({
   const dict = dictionaries[locale] || dictionaries.en;
 
   return (
-    <html lang={locale} dir={locale === "ar" ? "rtl" : "ltr"} className={`${body.variable} ${heading.variable}`}>
-      <head />
-      <body className="bg-bg-primary text-text-primary font-body antialiased">
-        <Nav dict={dict.nav} locale={locale} />
-        <main>{children}</main>
-        <Footer dict={dict} />
+    <html
+      lang={locale}
+      dir={locale === "ar" ? "rtl" : "ltr"}
+      className={`${body.variable} ${heading.variable}`}
+      suppressHydrationWarning
+    >
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){try{var t=localStorage.getItem("theme");var d=window.matchMedia("(prefers-color-scheme: dark)").matches;if(t==="dark"||(!t&&d))document.documentElement.classList.add("dark");else document.documentElement.classList.remove("dark");}catch(e){}})();`,
+          }}
+        />
+      </head>
+      <body className="bg-bg-primary text-text-primary font-body antialiased transition-colors duration-400">
+        <ThemeProvider>
+          <Nav dict={dict.nav} locale={locale} />
+          <main>{children}</main>
+          <Footer dict={dict} />
+        </ThemeProvider>
       </body>
     </html>
   );

@@ -19,7 +19,7 @@ const schema = z.object({
 type FormData = z.infer<typeof schema>;
 
 const inputClasses =
-  "w-full border-b border-text-primary/15 bg-transparent py-3 text-body text-text-primary placeholder:text-text-secondary/60 focus:border-accent focus:outline-none transition-colors";
+  "w-full border-b border-text-primary/15 bg-transparent py-3 text-body text-text-primary placeholder:text-text-secondary/60 focus:border-accent focus:outline-none transition-colors dark:text-white dark:placeholder:text-white/40";
 
 export function ContactForm({ dict }: { dict: any }) {
   const [status, setStatus] = useState<"idle" | "success" | "error">("idle");
@@ -102,7 +102,9 @@ export function ContactForm({ dict }: { dict: any }) {
       <div className="sm:col-span-2 flex items-center gap-6 pt-2">
         <Button type="submit">{isSubmitting ? dict.sending : dict.submit}</Button>
         {status === "success" && (
-          <p className="text-small text-success">{dict.success}</p>
+          <div className="flex-1 bg-success/10 border border-success/30 rounded-lg p-4">
+            <p className="text-small text-success font-medium">Good call you are in good hands I will reply as soon as possible</p>
+          </div>
         )}
         {status === "error" && (
           <p className="text-small text-error">{dict.error}</p>

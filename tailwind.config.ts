@@ -17,9 +17,10 @@ const config: Config = {
           secondary: "var(--text-secondary)",
         },
         accent: {
-          DEFAULT: "#C69C6D",
-          hover: "#B08A5B",
+          DEFAULT: "var(--accent)",
+          hover: "var(--accent-hover)",
         },
+        muted: "var(--muted)",
         success: "#16A34A",
         warning: "#EAB308",
         error: "#DC2626",

@@ -18,7 +18,7 @@ export function Process({ dict }: { dict: any }) {
             eyebrow={dict.eyebrow}
             title={dict.title}
             description={dict.description}
-            className="[&_span]:text-[#C69C6D] [&_h2]:text-white [&_p]:text-white/60"
+            className="[&_span]:text-accent [&_h2]:text-white [&_p]:text-white/60"
           />
         </div>
 
@@ -37,7 +37,7 @@ export function Process({ dict }: { dict: any }) {
                 0{i + 1}
               </div>
 
-              <div className="w-full md:w-1/3 text-[#C69C6D] font-heading text-4xl md:text-5xl font-bold pt-4">
+              <div className="w-full md:w-1/3 text-accent font-heading text-4xl md:text-5xl font-bold pt-4">
                 {step.title}
               </div>
               

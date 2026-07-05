@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "./theme-toggle";
+import { useTheme } from "@/components/theme-provider";
 
 const LINKS = [
   { label: "Work", href: "/#work" },
@@ -26,6 +27,9 @@ export function Nav({
   const [menuOpen, setMenuOpen] = useState(false);
   const pathname = usePathname();
   const router = useRouter();
+  const { isDark } = useTheme();
+
+  const useLightNavText = !scrolled && isDark;
 
   const toggleLanguage = () => {
     const newLocale = locale === "en" ? "ar" : "en";
@@ -45,8 +49,11 @@ export function Nav({
       className={cn(
         "fixed inset-x-0 top-0 z-50 transition-all duration-300 ease-elegant",
         scrolled
-          ? "bg-bg-primary/95 shadow-[0_1px_0_0_rgba(22,22,22,0.06)] backdrop-blur-md py-3"
-          : "bg-transparent py-6 border-b border-white/10"
+          ? "bg-bg-primary/95 shadow-[0_1px_0_0_rgba(22,22,22,0.06)] backdrop-blur-md py-3 dark:shadow-[0_1px_0_0_rgba(255,255,255,0.06)]"
+          : cn(
+              "bg-transparent py-6 border-b",
+              useLightNavText ? "border-white/10" : "border-text-primary/10"
+            )
       )}
     >
       <nav className="mx-auto flex max-w-site items-center justify-between px-6 md:px-10">
@@ -58,39 +65,42 @@ export function Nav({
               window.scrollTo({ top: 0, behavior: "smooth" });
             }
           }}
-          className={cn("font-sans text-xl md:text-2xl font-black tracking-tighter", scrolled ? "text-text-primary" : "text-white")}
+          className={cn(
+            "font-sans text-xl md:text-2xl font-black tracking-tighter transition-colors",
+            useLightNavText ? "text-white" : "text-text-primary"
+          )}
         >
           YT.
         </Link>
 
         <ul className="hidden items-center gap-8 md:flex">
           <li>
-            <Link href="/#work" className={cn("link-underline text-[13px] uppercase tracking-widest font-semibold transition-colors", scrolled ? "text-text-primary/80 hover:text-text-primary" : "text-white/80 hover:text-white")}>
+            <Link href="/#work" className={cn("link-underline text-[13px] uppercase tracking-widest font-semibold transition-colors", useLightNavText ? "text-white/80 hover:text-white" : "text-text-primary/80 hover:text-text-primary")}>
               {dict.work}
             </Link>
           </li>
           <li>
-            <Link href="/#services" className={cn("link-underline text-[13px] uppercase tracking-widest font-semibold transition-colors", scrolled ? "text-text-primary/80 hover:text-text-primary" : "text-white/80 hover:text-white")}>
+            <Link href="/#services" className={cn("link-underline text-[13px] uppercase tracking-widest font-semibold transition-colors", useLightNavText ? "text-white/80 hover:text-white" : "text-text-primary/80 hover:text-text-primary")}>
               {dict.services}
             </Link>
           </li>
           <li>
-            <Link href="/#about" className={cn("link-underline text-[13px] uppercase tracking-widest font-semibold transition-colors", scrolled ? "text-text-primary/80 hover:text-text-primary" : "text-white/80 hover:text-white")}>
+            <Link href="/#about" className={cn("link-underline text-[13px] uppercase tracking-widest font-semibold transition-colors", useLightNavText ? "text-white/80 hover:text-white" : "text-text-primary/80 hover:text-text-primary")}>
               {dict.about}
             </Link>
           </li>
           <li>
-            <Link href="/#contact" className={cn("link-underline text-[13px] uppercase tracking-widest font-semibold transition-colors", scrolled ? "text-text-primary/80 hover:text-text-primary" : "text-white/80 hover:text-white")}>
+            <Link href="/#contact" className={cn("link-underline text-[13px] uppercase tracking-widest font-semibold transition-colors", useLightNavText ? "text-white/80 hover:text-white" : "text-text-primary/80 hover:text-text-primary")}>
               {dict.letsTalk}
             </Link>
           </li>
         </ul>
 
         <div className="hidden items-center gap-4 md:flex">
-          <ThemeToggle scrolled={scrolled} />
+          <ThemeToggle scrolled={scrolled || !isDark} />
           <button 
             onClick={toggleLanguage}
-            className={cn("text-sm font-medium transition-colors", scrolled ? "text-text-primary/80 hover:text-text-primary" : "text-white/80 hover:text-white")}
+            className={cn("text-sm font-medium transition-colors", useLightNavText ? "text-white/80 hover:text-white" : "text-text-primary/80 hover:text-text-primary")}
             aria-label="Switch language"
           >
             {locale === "en" ? "AR" : "EN"}
@@ -98,10 +108,10 @@ export function Nav({
         </div>
 
         <div className="flex items-center gap-4 md:hidden">
-          <ThemeToggle scrolled={scrolled} />
+          <ThemeToggle scrolled={scrolled || !isDark} />
           <button 
             onClick={toggleLanguage}
-            className={cn("text-sm font-medium transition-colors", scrolled ? "text-text-primary/80 hover:text-text-primary" : "text-white/80 hover:text-white")}
+            className={cn("text-sm font-medium transition-colors", useLightNavText ? "text-white/80 hover:text-white" : "text-text-primary/80 hover:text-text-primary")}
             aria-label="Switch language"
           >
             {locale === "en" ? "AR" : "EN"}

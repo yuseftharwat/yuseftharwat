@@ -1,61 +1,79 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
+import { cn } from "@/lib/utils";
+import { useTheme } from "@/components/theme-provider";
+
+function SunIcon({ className }: { className?: string }) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={className}
+    >
+      <circle cx="12" cy="12" r="4" />
+      <path d="M12 2v2" />
+      <path d="M12 20v2" />
+      <path d="m4.93 4.93 1.41 1.41" />
+      <path d="m17.66 17.66 1.41 1.41" />
+      <path d="M2 12h2" />
+      <path d="M20 12h2" />
+      <path d="m6.34 17.66-1.41 1.41" />
+      <path d="m19.07 4.93-1.41 1.41" />
+    </svg>
+  );
+}
+
+function MoonIcon({ className }: { className?: string }) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={className}
+    >
+      <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z" />
+    </svg>
+  );
+}
 
 export function ThemeToggle({ scrolled = false }: { scrolled?: boolean }) {
-  const [isDark, setIsDark] = useState(false);
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-    // Initialize theme based on localStorage or system preference
-    const savedTheme = localStorage.getItem("theme");
-    const systemPrefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-    
-    if (savedTheme === "dark" || (!savedTheme && systemPrefersDark)) {
-      document.documentElement.classList.add("dark");
-      setIsDark(true);
-    } else {
-      document.documentElement.classList.remove("dark");
-      setIsDark(false);
-    }
-  }, []);
-
-  const toggleTheme = () => {
-    if (isDark) {
-      document.documentElement.classList.remove("dark");
-      localStorage.setItem("theme", "light");
-      setIsDark(false);
-    } else {
-      document.documentElement.classList.add("dark");
-      localStorage.setItem("theme", "dark");
-      setIsDark(true);
-    }
-  };
-
-  // Prevent hydration mismatch by not rendering the icon until mounted
-  if (!mounted) {
-    return (
-      <div className="flex h-8 w-12 items-center justify-center"></div>
-    );
-  }
+  const { isDark, toggleTheme } = useTheme();
 
   return (
     <button
+      type="button"
       onClick={toggleTheme}
-      aria-label="Toggle dark mode"
-      className={`text-[13px] font-semibold uppercase tracking-widest transition-colors ${
-        scrolled ? "text-text-primary/80 hover:text-text-primary" : "text-white/80 hover:text-white"
-      }`}
+      aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
+      className={cn(
+        "relative flex items-center justify-center w-10 h-10 rounded-full transition-all duration-300",
+        "hover:bg-accent/10 active:scale-95",
+        scrolled || !isDark
+          ? "text-text-primary/80 hover:text-text-primary"
+          : "text-white/80 hover:text-white"
+      )}
     >
-      <motion.div
-        initial={false}
-        animate={{ opacity: [0, 1] }}
-        transition={{ duration: 0.3 }}
-      >
-        {isDark ? "Light" : "Dark"}
-      </motion.div>
+      <AnimatePresence mode="wait" initial={false}>
+        <motion.div
+          key={isDark ? "moon" : "sun"}
+          initial={{ rotate: -90, opacity: 0, scale: 0.5 }}
+          animate={{ rotate: 0, opacity: 1, scale: 1 }}
+          exit={{ rotate: 90, opacity: 0, scale: 0.5 }}
+          transition={{ duration: 0.2, ease: "easeInOut" }}
+          className="absolute"
+        >
+          {isDark ? <MoonIcon className="w-5 h-5" /> : <SunIcon className="w-5 h-5" />}
+        </motion.div>
+      </AnimatePresence>
     </button>
   );
 }

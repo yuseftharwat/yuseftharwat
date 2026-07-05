@@ -11,7 +11,7 @@ export function Contact({ dict }: { dict: any }) {
         <div className="grid grid-cols-1 gap-20 lg:grid-cols-12 lg:gap-16">
           <div className="lg:col-span-5 flex flex-col justify-between">
             <div>
-              <span className="text-[11px] font-semibold uppercase tracking-[0.2em] text-[#C69C6D] mb-6 block">
+              <span className="text-[11px] font-semibold uppercase tracking-[0.2em] text-accent dark:text-white mb-6 block">
                 {dict.eyebrow || "Let's Talk"}
               </span>
               <h2 className="font-heading text-5xl md:text-6xl font-bold text-white leading-tight">
@@ -23,7 +23,7 @@ export function Contact({ dict }: { dict: any }) {
             </div>
 
             <div className="mt-16 flex flex-col gap-4">
-              <a href="mailto:youssifqp123@gmail.com" className="text-xl font-heading text-white hover:text-[#C69C6D] transition-colors">
+              <a href="mailto:youssifqp123@gmail.com" className="text-xl font-heading text-white hover:text-accent transition-colors">
                 youssifqp123@gmail.com
               </a>
               <div className="flex items-center gap-6 mt-4">
