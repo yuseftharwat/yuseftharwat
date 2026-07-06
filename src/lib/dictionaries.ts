@@ -7,7 +7,7 @@ export const dictionaries = {
       letsTalk: "Let's Talk",
     },
     hero: {
-      eyebrow: "3D ARTIST & MOTION DESIGNER",
+      eyebrow: "Yusef Tharwat - 3D ARTIST & MOTION DESIGNER",
       titlePart1: "We make your brand look ",
       titleHighlight: "cooler",
       titlePart2: " than your competition.",
