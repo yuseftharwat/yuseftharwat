@@ -51,6 +51,7 @@ export default async function HomePage() {
     name: "Yusef Tharwat - 3D Product Animation & CGI Services",
     description: "Commercial-quality CGI, product animation, and motion design for premium brands.",
     url: baseUrl,
+    image: "https://yuseftharwat.com/logo.png",
     telephone: "+20",
     address: {
       "@type": "PostalAddress",

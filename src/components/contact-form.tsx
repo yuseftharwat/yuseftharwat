@@ -102,6 +102,7 @@ export function ContactForm({ dict }: { dict: any }) {
         <div className="flex gap-3">
           <select
             id="countryCode"
+            aria-label="Country Code"
             {...register("countryCode")}
             className="w-40 border-b border-white/20 bg-transparent py-3 text-body text-white focus:border-accent focus:outline-none transition-colors"
             onKeyDown={(e) => {
