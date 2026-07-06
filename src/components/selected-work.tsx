@@ -264,14 +264,14 @@ export function SelectedWork({ projects, dict, locale }: { projects: Project[]; 
   }, [isTouchDevice, clearMobilePreview]);
 
   return (
-    <section id="work" className="relative py-section overflow-hidden">
+    <section id="work" aria-labelledby="selected-work-heading" className="relative py-section overflow-hidden">
       {/* Background Image */}
       <div className="absolute inset-0 z-0 bg-[url('/work-bg.png')] bg-cover bg-center bg-fixed bg-no-repeat opacity-25 dark:opacity-100 transition-opacity duration-500" aria-hidden="true" />
       <div className="absolute inset-0 z-0 bg-gradient-to-b from-bg-primary/95 via-bg-primary/90 to-bg-primary dark:from-black/90 dark:via-black/80 dark:to-black/95 transition-colors duration-500" aria-hidden="true" />
 
       <div className="relative z-10 mx-auto max-w-site px-6 md:px-10">
         {/* Header with arrows */}
-        <div className="flex items-end justify-between mb-16">
+        <header className="flex items-end justify-between mb-16">
           <SectionHeading
             eyebrow={dict.eyebrow}
             title={dict.title}
@@ -320,7 +320,7 @@ export function SelectedWork({ projects, dict, locale }: { projects: Project[]; 
               )}
             </button>
           </div>
-        </div>
+        </header>
       </div>
 
       {/* Horizontal Scroll Container — full bleed */}

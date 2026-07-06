@@ -27,19 +27,37 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }: ProjectPageProps): Promise<Metadata> {
-  // Always fetch English metadata for simplicity, or we could pass locale if we want localized SEO
   const project = await getProjectBySlug(params.slug);
   if (!project) return {};
+
+  const baseUrl = "https://www.yuseftharwat.com";
+  const canonicalUrl = `${baseUrl}/work/${project.slug}`;
 
   return {
     title: project.seoTitle,
     description: project.seoDescription,
-    alternates: { canonical: `/work/${project.slug}` },
+    alternates: { canonical: canonicalUrl },
     openGraph: {
       title: project.seoTitle,
       description: project.seoDescription,
-      images: [{ url: project.posterImage }],
+      url: canonicalUrl,
+      siteName: "Yusef Tharwat",
+      locale: "en_US",
       type: "article",
+      images: [
+        {
+          url: project.posterImage,
+          width: 1200,
+          height: 630,
+          alt: `${project.title} - 3D Product Animation by Yusef Tharwat`,
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: project.seoTitle,
+      description: project.seoDescription,
+      images: [project.posterImage],
     },
   };
 }
@@ -56,21 +74,93 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
     getNextProject(project),
   ]);
 
-  const structuredData = {
+  const baseUrl = "https://www.yuseftharwat.com";
+  const projectUrl = `${baseUrl}/work/${project.slug}`;
+
+  // Enhanced Structured Data for CreativeWork
+  const creativeWorkSchema = {
     "@context": "https://schema.org",
     "@type": "CreativeWork",
     name: project.title,
-    creator: { "@type": "Person", name: "Yusef Tharwat" },
+    description: project.seoDescription,
+    creator: {
+      "@type": "Person",
+      name: "Yusef Tharwat",
+      url: baseUrl,
+    },
     dateCreated: project.publishDate,
+    datePublished: project.publishDate,
     about: project.industry,
     image: project.posterImage,
+    url: projectUrl,
+    keywords: project.services.join(", "),
+    inLanguage: "en",
+    genre: "3D Product Animation",
+    audience: {
+      "@type": "Audience",
+      audienceType: "Business",
+    },
+  };
+
+  // Structured Data for VideoObject if video exists
+  let videoSchema = null;
+  if (project.heroVideo || project.muxPlaybackId) {
+    videoSchema = {
+      "@context": "https://schema.org",
+      "@type": "VideoObject",
+      name: project.title,
+      description: project.seoDescription,
+      thumbnailUrl: project.posterImage,
+      uploadDate: project.publishDate,
+      contentUrl: project.heroVideo,
+      author: {
+        "@type": "Person",
+        name: "Yusef Tharwat",
+      },
+    };
+  }
+
+  // Structured Data for BreadcrumbList
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "Home",
+        item: baseUrl,
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: "Work",
+        item: `${baseUrl}/#work`,
+      },
+      {
+        "@type": "ListItem",
+        position: 3,
+        name: project.title,
+        item: projectUrl,
+      },
+    ],
   };
 
   return (
     <article className="pt-28">
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(creativeWorkSchema) }}
+      />
+      {videoSchema && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(videoSchema) }}
+        />
+      )}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
       />
 
       <section className="mx-auto max-w-site px-6 md:px-10">

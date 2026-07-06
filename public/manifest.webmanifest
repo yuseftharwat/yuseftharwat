@@ -1,0 +1,42 @@
+{
+  "name": "Yusef Tharwat - 3D Product Animation & CGI Artist",
+  "short_name": "Yusef Tharwat",
+  "description": "Premium 3D product animation and CGI artist specializing in product visualization, CGI commercials, motion design, and VFX.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0a0a0a",
+  "theme_color": "#C69C6D",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/icon.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icon.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["design", "creative", "portfolio"],
+  "screenshots": [],
+  "shortcuts": [
+    {
+      "name": "View Work",
+      "short_name": "Work",
+      "description": "View selected 3D animation projects",
+      "url": "/#work",
+      "icons": [{ "src": "/icon.png", "sizes": "96x96" }]
+    },
+    {
+      "name": "Contact",
+      "short_name": "Contact",
+      "description": "Get in touch for project inquiries",
+      "url": "/#contact",
+      "icons": [{ "src": "/icon.png", "sizes": "96x96" }]
+    }
+  ]
+}

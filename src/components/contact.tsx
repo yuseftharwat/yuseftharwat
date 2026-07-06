@@ -2,7 +2,7 @@ import { ContactForm } from "@/components/contact-form";
 
 export function Contact({ dict }: { dict: any }) {
   return (
-    <section id="contact" className="relative py-section overflow-hidden min-h-screen flex items-center">
+    <section id="contact" aria-labelledby="contact-heading" className="relative py-section overflow-hidden min-h-screen flex items-center">
       {/* Background Image */}
       <div className="absolute inset-0 z-0 bg-[url('/contact-bg.png')] bg-cover bg-center bg-no-repeat" aria-hidden="true" />
       <div className="absolute inset-0 z-0 bg-gradient-to-t from-black via-black/80 to-black/60" aria-hidden="true" />
@@ -11,12 +11,13 @@ export function Contact({ dict }: { dict: any }) {
         <div className="grid grid-cols-1 gap-20 lg:grid-cols-12 lg:gap-16">
           <div className="lg:col-span-5 flex flex-col justify-between">
             <div>
+              <h2 id="contact-heading" className="sr-only">{dict.title}</h2>
               <span className="text-[11px] font-semibold uppercase tracking-[0.2em] text-accent dark:text-white mb-6 block">
                 {dict.eyebrow || "Let's Talk"}
               </span>
-              <h2 className="font-heading text-5xl md:text-6xl font-bold text-white leading-tight">
+              <p className="font-heading text-5xl md:text-6xl font-bold text-white leading-tight">
                 {dict.title}
-              </h2>
+              </p>
               <p className="mt-8 max-w-md text-lg text-white/60 leading-relaxed font-light">
                 {dict.description}
               </p>

@@ -7,7 +7,7 @@ export function Hero({ dict }: { dict: any }) {
   const shouldReduceMotion = useReducedMotion();
 
   return (
-    <section className="relative flex min-h-screen items-center overflow-hidden pt-24 pb-12">
+    <section aria-labelledby="hero-heading" className="relative flex min-h-screen items-center overflow-hidden pt-24 pb-12">
       {/* Background Image & Gradient Overlay */}
       <div
         className="absolute inset-0 z-0 bg-[url('/hero-bg.png')] bg-cover bg-center bg-no-repeat opacity-30 dark:opacity-100 transition-opacity duration-500"
@@ -27,12 +27,12 @@ export function Hero({ dict }: { dict: any }) {
           className="flex max-w-3xl flex-col items-start text-left"
         >
           {/* Eyebrow */}
-          <span className="mb-4 text-sm md:text-base font-semibold tracking-[0.15em] text-accent uppercase">
+          <p className="mb-4 text-sm md:text-base font-semibold tracking-[0.15em] text-accent uppercase">
             {dict.eyebrow}
-          </span>
+          </p>
 
           {/* Title */}
-          <h1 className="font-sans text-[2.5rem] leading-[1.05] md:text-[4rem] font-bold tracking-tight text-text-primary dark:text-white text-balance uppercase transition-colors duration-500">
+          <h1 id="hero-heading" className="font-sans text-[2.5rem] leading-[1.05] md:text-[4rem] font-bold tracking-tight text-text-primary dark:text-white text-balance uppercase transition-colors duration-500">
             {dict.titlePart1}<span className="text-text-primary dark:text-white">{dict.titleHighlight}</span>{dict.titlePart2}
           </h1>
 
@@ -42,7 +42,7 @@ export function Hero({ dict }: { dict: any }) {
           </p>
 
           {/* Buttons */}
-          <div className="mt-10 flex flex-wrap items-center gap-4">
+          <nav className="mt-10 flex flex-wrap items-center gap-4" aria-label="Primary navigation">
             <Button
               href="/#work"
               size="lg"
@@ -57,7 +57,7 @@ export function Hero({ dict }: { dict: any }) {
             >
               {dict.bookProject}
             </Button>
-          </div>
+          </nav>
         </motion.div>
       </div>
 
@@ -67,6 +67,7 @@ export function Hero({ dict }: { dict: any }) {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 1, duration: 1 }}
+        aria-hidden="true"
       >
         <span className="text-[10px] font-semibold uppercase tracking-[0.2em] text-text-secondary dark:text-white/70 transition-colors duration-500">
           Scroll

@@ -2,16 +2,17 @@ import { Reveal } from "@/components/animations/reveal";
 
 export function About({ dict }: { dict: any }) {
   return (
-    <section id="about" className="relative py-section overflow-hidden">
+    <section id="about" aria-labelledby="about-heading" className="relative py-section overflow-hidden">
       {/* Background Image */}
       <div className="absolute inset-0 z-0 bg-[url('/about-bg.png')] bg-cover bg-center bg-no-repeat opacity-20 dark:opacity-100 transition-opacity duration-500" aria-hidden="true" />
       <div className="absolute inset-0 z-0 bg-gradient-to-b from-bg-primary/90 via-bg-primary/80 to-bg-primary dark:from-black/80 dark:via-black/60 dark:to-black/90 transition-colors duration-500" aria-hidden="true" />
 
       <div className="relative z-10 mx-auto max-w-site px-6 md:px-10">
         <Reveal>
-          <span className="text-[11px] font-semibold uppercase tracking-[0.2em] text-accent">
+          <h2 id="about-heading" className="sr-only">{dict.eyebrow}</h2>
+          <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-accent">
             {dict.eyebrow}
-          </span>
+          </p>
         </Reveal>
 
         {/* Main Bio */}

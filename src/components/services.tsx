@@ -4,7 +4,7 @@ import type { Service } from "@/lib/types";
 
 export function Services({ services, dict }: { services: Service[]; dict: any }) {
   return (
-    <section id="services" className="relative py-section overflow-hidden">
+    <section id="services" aria-labelledby="services-heading" className="relative py-section overflow-hidden">
       {/* Background Image */}
       <div className="absolute inset-0 z-0 bg-[url('/services-bg.png')] bg-cover bg-center bg-no-repeat opacity-20 dark:opacity-100 transition-opacity duration-500" aria-hidden="true" />
       <div className="absolute inset-0 z-0 bg-gradient-to-t from-bg-primary via-bg-primary/95 to-bg-primary/85 dark:from-black dark:via-black/80 dark:to-black/60 transition-colors duration-500" aria-hidden="true" />
