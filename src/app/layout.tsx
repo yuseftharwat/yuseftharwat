@@ -20,7 +20,7 @@ const heading = Cormorant_Garamond({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://www.yuseftharwat.com"),
+  metadataBase: new URL("https://yuseftharwat.com"),
   title: {
     default: "Yusef Tharwat | Premium 3D Product Animation & CGI Artist",
     template: "%s | Yusef Tharwat",
@@ -44,7 +44,7 @@ export const metadata: Metadata = {
     "Product Animation",
     "3D Rendering",
   ],
-  authors: [{ name: "Yusef Tharwat", url: "https://www.yuseftharwat.com" }],
+  authors: [{ name: "Yusef Tharwat", url: "https://yuseftharwat.com" }],
   creator: "Yusef Tharwat",
   publisher: "Yusef Tharwat",
   category: "Design & Creative Services",
@@ -65,7 +65,7 @@ export const metadata: Metadata = {
     title: "Yusef Tharwat | Premium 3D Product Animation & CGI Artist",
     description:
       "Commercial-quality CGI, product animation, and motion design for premium brands. Specializing in 3D product visualization, CGI commercials, and motion design.",
-    url: "https://www.yuseftharwat.com",
+    url: "https://yuseftharwat.com",
     locale: "en_US",
     images: [
       {

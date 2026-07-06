@@ -18,7 +18,7 @@ export default async function HomePage() {
     getTestimonials(),
   ]);
 
-  const baseUrl = "https://www.yuseftharwat.com";
+  const baseUrl = "https://yuseftharwat.com";
 
   // Structured Data for Person
   const personSchema = {

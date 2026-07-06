@@ -30,7 +30,7 @@ export async function generateMetadata({ params }: ProjectPageProps): Promise<Me
   const project = await getProjectBySlug(params.slug);
   if (!project) return {};
 
-  const baseUrl = "https://www.yuseftharwat.com";
+  const baseUrl = "https://yuseftharwat.com";
   const canonicalUrl = `${baseUrl}/work/${project.slug}`;
 
   return {
@@ -74,7 +74,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
     getNextProject(project),
   ]);
 
-  const baseUrl = "https://www.yuseftharwat.com";
+  const baseUrl = "https://yuseftharwat.com";
   const projectUrl = `${baseUrl}/work/${project.slug}`;
 
   // Enhanced Structured Data for CreativeWork
