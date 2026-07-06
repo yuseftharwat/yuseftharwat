@@ -65,6 +65,7 @@ export const metadata: Metadata = {
 
 import { cookies } from "next/headers";
 import { dictionaries, Locale } from "@/lib/dictionaries";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 export default function RootLayout({
   children,
@@ -95,6 +96,7 @@ export default function RootLayout({
           <main>{children}</main>
           <Footer dict={dict} />
         </ThemeProvider>
+        <SpeedInsights />
       </body>
     </html>
   );
