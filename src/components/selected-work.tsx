@@ -16,10 +16,16 @@ export function SelectedWork({ projects, dict, locale }: { projects: Project[]; 
   const autoScrollRef = useRef<number>();
   const isDraggingRef = useRef(false);
   const resumeTimeoutRef = useRef<number>();
+  const mobileActivePreviewRef = useRef<string | null>(null);
   const isRTL = locale === 'ar';
   const [translateX, setTranslateX] = useState(0);
   const [singleSetWidth, setSingleSetWidth] = useState(0);
   const [mobileActivePreview, setMobileActivePreview] = useState<string | null>(null);
+
+  // Keep ref in sync with state
+  useEffect(() => {
+    mobileActivePreviewRef.current = mobileActivePreview;
+  }, [mobileActivePreview]);
 
   // Duplicate projects 3 times for seamless loop (enough to fill viewport)
   const marqueeProjects = [...projects, ...projects, ...projects];
@@ -123,7 +129,7 @@ export function SelectedWork({ projects, dict, locale }: { projects: Project[]; 
         const projectCard = elementUnderFinger?.closest('[data-project-card]');
         if (projectCard) {
           const projectSlug = projectCard.getAttribute('data-project-card');
-          if (projectSlug && projectSlug !== mobileActivePreview) {
+          if (projectSlug && projectSlug !== mobileActivePreviewRef.current) {
             setMobileActivePreview(projectSlug);
           }
         }
