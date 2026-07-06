@@ -4,6 +4,7 @@ import "./globals.css";
 import { Nav } from "@/components/nav";
 import { Footer } from "@/components/footer";
 import { ThemeProvider } from "@/components/theme-provider";
+import { Analytics } from "@vercel/analytics/react";
 
 const body = Inter({
   subsets: ["latin"],
@@ -142,6 +143,7 @@ export default function RootLayout({
           <main id="main-content">{children}</main>
           <Footer dict={dict} />
         </ThemeProvider>
+        <Analytics />
       </body>
     </html>
   );
