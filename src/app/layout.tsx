@@ -69,7 +69,7 @@ export const metadata: Metadata = {
     locale: "en_US",
     images: [
       {
-        url: "/logo.png",
+        url: "/og-image.jpeg",
         width: 1200,
         height: 630,
         alt: "Yusef Tharwat - 3D Product Animation & CGI Artist Portfolio",
@@ -85,7 +85,7 @@ export const metadata: Metadata = {
       "Commercial-quality CGI, product animation, and motion design for premium brands. Specializing in 3D product visualization, CGI commercials, and motion design.",
     images: [
       {
-        url: "/logo.png",
+        url: "/og-image.jpeg",
         width: 1200,
         height: 630,
         alt: "Yusef Tharwat - 3D Product Animation & CGI Artist Portfolio",
