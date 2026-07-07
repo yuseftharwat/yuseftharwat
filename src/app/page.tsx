@@ -27,6 +27,7 @@ export default async function HomePage() {
     name: "Yusef Tharwat",
     jobTitle: "3D Product Animation & CGI Artist",
     url: baseUrl,
+    image: "https://yuseftharwat.com/YT.png",
     sameAs: [
       "https://www.linkedin.com/in/yusef-tharwat-0a8713293/",
       "https://www.instagram.com/_yuseftharwat/",
